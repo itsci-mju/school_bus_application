@@ -28,27 +28,18 @@ class _MainChidrenState extends State<MainPageChidren>{
       body: screens[_currentIndex],
       bottomNavigationBar: SalomonBottomBar(
         currentIndex: _currentIndex,
-        onTap: (index) => index == 2 ? checkLogout() : setState(() => _currentIndex = index),
+        onTap: (index) => index == 1 ? checkLogout() : setState(() => _currentIndex = index),
         items: [
           /// Home
           SalomonBottomBarItem(
             icon: const Icon(CupertinoIcons.home),
-            title: const Text("Home"),
-            selectedColor: Color(0xffe3a510),
-          ),
-
-          /// Contract
-          SalomonBottomBarItem(
-            icon: const ImageIcon(
-              AssetImage("images/application_icon.png"),
-            ),
-            title: Text("Contract"),
+            title: const Text("หน้าแรก",style:TextStyle( fontFamily: 'Kanit')),
             selectedColor: Color(0xffe3a510),
           ),
           /// Profile
           SalomonBottomBarItem(
             icon: Icon(Icons.logout),
-            title: Text("logout"),
+            title: Text("ออกจากระบบ",style:TextStyle( fontFamily: 'Kanit')),
             selectedColor: Color(0xffe3a510),
           ),
         ],

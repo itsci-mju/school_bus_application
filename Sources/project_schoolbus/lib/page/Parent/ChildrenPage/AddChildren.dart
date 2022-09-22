@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:project_schoolbus/importer.dart';
+import '../../AlertDialog.dart';
 import '../../Driver/HomePage/light_colors.dart';
 import '../../Register/BottonWidget.dart';
 import 'ChildrenPage.dart';
@@ -248,9 +249,9 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
                                     FocusScope.of(context).requestFocus(new FocusNode());
                                     date = await showDatePicker(
                                         context: context,
-                                        initialDate:DateTime.now(),
+                                        initialDate:DateTime(DateTime.now().year-5),
                                         firstDate:DateTime(1900),
-                                        lastDate: DateTime.now());
+                                        lastDate: DateTime(DateTime.now().year-5));
 
                                     if(date != null){
                                       setState(() {
@@ -268,8 +269,9 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
                                 child: TextFormField(
                                   controller: _ctrlphone,
                                   keyboardType: TextInputType.number,
-                                  inputFormatters: [
-                                    FilteringTextInputFormatter.deny(RegExp('.-')),
+                                  inputFormatters: <TextInputFormatter>[
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(10),
                                   ],
                                   validator: (value) {
                                     RegExp phoneRex = RegExp (r"(\d{10})");
@@ -277,7 +279,7 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
                                     if (value == null || value.isEmpty) {
                                       return 'กรุณากรอกหมายเลขโทรศัพท์';
                                     }else if(!phoneRex.hasMatch(value.toString())){
-                                      return 'กรุณากรอกหมายเลขโทรศัพท์ ด้วยตัวเลข 13 หลัก!';
+                                      return 'กรุณากรอกหมายเลขโทรศัพท์ ด้วยตัวเลข 10 หลัก!';
                                     }
                                     return null;
                                   },
@@ -351,29 +353,12 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
                           const SizedBox(
                             height: height,
                           ),
-                          TextFormField(
-
-                            readOnly: true,
-                            controller: _ckfilename,
-                            keyboardType: TextInputType.none,
-
-                            validator: (value) {
-
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาอัปโหลดรูปภาพประจำตัว';
-                              }
-                              return null;
-
-                            },
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.photo),
-                              labelText: 'รูปภาพประจำตัว',
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                            ),
-                          ),
+                          Center(
+                              child: file == null || file == ''
+                                  ? Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: const Text("กรุณาอัปโหลดรูปภาพประจำตัวบุตร"))
+                                  : Image.file(file!,height: 150,width: 150,fit: BoxFit.cover)),
                           const SizedBox(
                             height: height,
                           ),
@@ -384,10 +369,9 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
                                 ElevatedButton(
                                   onPressed: () {
                                     showDialog(context: context, builder: (context) => AlertDialog(
-                                      title: const Text("คุุณแน่ใจหรือมั้ยที่จะเพิ่ม เด็กเข้าสู่ระบบ"),
+                                      title: const Text("คุุณแน่ใจหรือมั้ยที่จะเพิ่ม บุตรข้าสู่ระบบ"),
                                       actions: [
-                                        ElevatedButton(onPressed: () async {
-                                          await uploadFile();
+                                        ElevatedButton(onPressed: ()  {
                                           doAddChildren(context);
                                         }, child: const Text("แน่ใจ")),
                                         ElevatedButton(onPressed: (){
@@ -446,47 +430,53 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
         MaterialPageRoute(
             builder: (context) => MyHomePage(indexScreen: 3,)));
   }
-
+  AlertDialogApp alertDialogApp =AlertDialogApp();
   ChildrenManager manager = ChildrenManager();
   Future doAddChildren(BuildContext context) async {
-    if(_formKey.currentState!.validate()){
-      try{
-        List<String> s = _ctrlbirthday.text.split("/");
-        DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
-        Children children = Children(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-            _ctrlemail.text,_ctrllineid.text,_ctrlimageprofile.text,p!,Login(_ctrlUsername.text,_ctrlPassword.text,"2"));
-        String result = await manager.addChildren(children);
-        var logger = Logger();
-        await getSharedPreferences.init();
-        logger.e(result);
-        if(result != "0") {
-          AnimatedSnackBar.rectangle(
-              'สำเร็จ',
-              'คุณเพิ่มเด็กสำเร็จ',
-              type: AnimatedSnackBarType.success,
-              brightness: Brightness.light,
-              duration : const Duration(seconds: 5)
-          ).show(
-            context,
-          );
-          Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => MyHomePage(indexScreen: null)));
-        }else{
-          AnimatedSnackBar.rectangle(
-              'เกิดข้อผิดพลาด',
-              'เกิดข้อผิดพลาดในการเพิ่มเด็ก',
-              type: AnimatedSnackBarType.error,
-              brightness: Brightness.light,
-              duration : const Duration(seconds: 5)
-          ).show(
-            context,
-          );
-          isLoading = false;
 
+    if(_formKey.currentState!.validate()){
+      if( file == null){
+        alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปภาพประจำตัว');
+      }else{
+        try{
+          await uploadFile();
+          List<String> s = _ctrlbirthday.text.split("/");
+          DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
+          Children children = Children(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
+              _ctrlemail.text,_ctrllineid.text,_ctrlimageprofile.text,p!,Login(_ctrlUsername.text,_ctrlPassword.text,"2"));
+          String result = await manager.addChildren(children);
+          var logger = Logger();
+          await getSharedPreferences.init();
+          logger.e(result);
+          if(result != "0") {
+            AnimatedSnackBar.rectangle(
+                'สำเร็จ',
+                'คุณเพิ่มเด็กสำเร็จ',
+                type: AnimatedSnackBarType.success,
+                brightness: Brightness.light,
+                duration : const Duration(seconds: 5)
+            ).show(
+              context,
+            );
+            Navigator.of(context).push(
+                MaterialPageRoute(
+                    builder: (context) => MyHomePage(indexScreen: null)));
+          }else{
+            AnimatedSnackBar.rectangle(
+                'เกิดข้อผิดพลาด',
+                'เกิดข้อผิดพลาดในการเพิ่มเด็ก',
+                type: AnimatedSnackBarType.error,
+                brightness: Brightness.light,
+                duration : const Duration(seconds: 5)
+            ).show(
+              context,
+            );
+            isLoading = false;
+
+          }
+        }catch(error){
+          print(error);
         }
-      }catch(error){
-        print(error);
       }
     }
   }

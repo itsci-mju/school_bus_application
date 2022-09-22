@@ -18,7 +18,7 @@ class SchoolBusDetailsPage extends StatefulWidget {
 class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
   RouteManager manager = RouteManager();
   String num_plate = getSharedPreferences.getNum_plate() ?? '';
-
+  String Firstname = getSharedPreferences.getFirstname() ?? '';
   List<Routes>? listRoutes ;
   List<Routes>? listRoutesBySchool ;
   bool isLoading = true;
@@ -460,7 +460,8 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                             const SizedBox(
                                               height: 10,
                                             ),
-                                            listRoutes![0].bus.seats_amount == l![0]
+                                            Firstname != ''
+                                              ?listRoutes![0].bus.seats_amount == l![0]
                                             ?Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                                               child: ElevatedButton(
@@ -498,7 +499,8 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                                   ),
                                                 ),
                                               ),
-                                            ),
+                                            )
+                                            :const SizedBox(height: 10,),
                                           ],
                                         ),
 

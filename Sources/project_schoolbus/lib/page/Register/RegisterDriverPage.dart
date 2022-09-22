@@ -932,7 +932,16 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                           padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
                           alignment: Alignment.topCenter
                       ),
-                      child: const Text(
+                      child: isLoading ? Row(
+                        children: const [
+                          CircularProgressIndicator(color: Colors.white),
+                          SizedBox(width: 24),Text('รอสักครู่...', style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                          )),
+                        ],
+                      ): const Text(
                         'สมัครสมาชิก',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -983,7 +992,9 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
   AlertDialogApp alertDialogApp =AlertDialogApp();
   DriverManager manager = DriverManager();
   RouteManager routeManager = RouteManager();
+
   Future doRegister(BuildContext context) async {
+    setState(() => isLoading = true);
     if(_formKey.currentState!.validate()){
       if(file1 == null){
         alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปภาพประจำตัว');
@@ -1032,6 +1043,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
 
 
                   if(resultr){
+                    isLoading = false;
                     AnimatedSnackBar.rectangle(
                         'สำเร็จ',
                         'คุณสมัครสมาชิกสำเร็จ',
@@ -1045,6 +1057,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                         MaterialPageRoute(
                             builder: (context) => const LoginPage()));
                   }else{
+                    isLoading = false;
                     AnimatedSnackBar.rectangle(
                         'เกิดข้อผิดพลาด',
                         'เกิดข้อผิดพลาดในการสมัครสมาชิก',
@@ -1054,10 +1067,11 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                     ).show(
                       context,
                     );
-                    isLoading = false;
+
 
                   }
                 }else{
+                  isLoading = false;
                   AnimatedSnackBar.rectangle(
                       'เกิดข้อผิดพลาด',
                       'เกิดข้อผิดพลาดในการสมัครสมาชิก',
@@ -1067,7 +1081,6 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                   ).show(
                     context,
                   );
-                  isLoading = false;
                 }
               }catch(error){
                 print(error);
@@ -1076,6 +1089,8 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
           }
         }
       }
+    }else{
+      setState(() => isLoading = false);
     }
   }
 

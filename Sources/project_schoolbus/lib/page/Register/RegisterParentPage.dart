@@ -246,9 +246,9 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                                 FocusScope.of(context).requestFocus(new FocusNode());
                                 date = await showDatePicker(
                                     context: context,
-                                    initialDate:DateTime.now(),
+                                    initialDate:DateTime(DateTime.now().year-20),
                                     firstDate:DateTime(1900),
-                                    lastDate: DateTime.now());
+                                    lastDate: DateTime(DateTime.now().year-20));
 
                                 if(date != null){
                                   setState(() {
@@ -386,21 +386,30 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                       Center(
                           child: file == null || file == ''
                               ? Container(
-                              margin: EdgeInsets.only(top: 10),
-                              child: Text("กรุณาอัปโหลดรูปภาพประจำตัว"))
+                              margin: const EdgeInsets.only(top: 10),
+                              child: const Text("กรุณาอัปโหลดรูปภาพประจำตัว"))
                               : Image.file(file!,height: 150,width: 150,fit: BoxFit.cover)),
 
                       const SizedBox(
                         height: height,
                       ),
-                      ElevatedButton(onPressed: () async {
-                          await uploadFile();
+                      ElevatedButton(onPressed: () {
                           doRegister(context);
                       },
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
                         ),
-                        child: const Text(
+
+                        child: isLoading ? Row(
+                          children: const [
+                            CircularProgressIndicator(color: Colors.white),
+                            SizedBox(width: 24),Text('รอสักครู่...', style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 17,
+                            )),
+                          ],
+                        ): const Text(
                           'สมัครสมาชิก',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
@@ -429,12 +438,13 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
   ParentManager manager = ParentManager();
   AlertDialogApp alertDialogApp =AlertDialogApp();
   Future doRegister(BuildContext context) async {
-
+    setState(() => isLoading = true);
     if(_formKey.currentState!.validate()){
       if(file == null){
         alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปภาพประจำตัว');
       }else{
       try{
+        await uploadFile();
         List<String> s = _ctrlbirthday.text.split("/");
         DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         Parent parent = Parent(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
@@ -444,7 +454,9 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
         var logger = Logger();
         await getSharedPreferences.init();
         logger.e(result);
-        if(result != "0") {
+        if(result != "0")  {
+
+          isLoading = false;
           AnimatedSnackBar.rectangle(
               'สำเร็จ',
               'คุณสมัครสมาชิกสำเร็จ',
@@ -474,7 +486,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
         print(error);
       }
     }
+    }else{
+      setState(() => isLoading = false);
     }
+
   }
 
   Future selectFile() async {

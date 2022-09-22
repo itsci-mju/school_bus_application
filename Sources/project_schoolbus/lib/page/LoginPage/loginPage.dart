@@ -10,6 +10,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../importer.dart';
 import '../MainPage/mainChidren.dart';
 import '../MainPage/mainDriver.dart';
+import '../Parent/SearchSchoolBus/SearchPage.dart';
 import '../Register/RegisterPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
@@ -41,6 +42,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return AbsorbPointer(
         absorbing: isLoading,
         child: Scaffold(
@@ -128,7 +130,6 @@ class _LoginPageState extends State<LoginPage> {
                                                     //make color or elevated button transparent
                                                   ),
                                                   onPressed: () {
-                                                    ProgressSchoolBus();
                                                     doLogin();
                                                   }, child: isLoading ? Row(
                                                     children: const [
@@ -171,6 +172,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                 ),
                               ])
+
                       ),
                     ),
                   ),
@@ -179,6 +181,17 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ),
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          SearchPage()));
+            },
+            backgroundColor: Colors.green,
+            child: const Icon(Icons.search),
+          ),
+
         ));
   }
 
@@ -252,6 +265,7 @@ class _LoginPageState extends State<LoginPage> {
 
   LoginManager loginManager = LoginManager();
   Future doLogin() async {
+    setState(() => isLoading = true);
     if(_formKey.currentState!.validate()){
       try{
         String result = await loginManager.doLogin(_ctrlUsername.text, _ctrlPassword.text);
@@ -271,7 +285,7 @@ class _LoginPageState extends State<LoginPage> {
             await getSharedPreferences.setIDCard(parentprofile.IDCard);
             await getSharedPreferences.setFirstname(parentprofile.firstname);
             await getSharedPreferences.setLastname(parentprofile.lastname);
-
+            isLoading = false;
             AnimatedSnackBar.rectangle(
                 'เข้าสู่ระบบสำเร็จ',
                 'ยินดีต้อนรับ : '+parentprofile.login.username,
@@ -281,7 +295,7 @@ class _LoginPageState extends State<LoginPage> {
             ).show(
               context,
             );
-            isLoading = true;
+
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                     builder: (context) => MyHomePage(indexScreen: null,)));
@@ -295,7 +309,7 @@ class _LoginPageState extends State<LoginPage> {
             await getSharedPreferences.setIDCard(childrenprofile.IDCard);
             await getSharedPreferences.setFirstname(childrenprofile.firstname);
             await getSharedPreferences.setLastname(childrenprofile.lastname);
-
+            isLoading = false;
             AnimatedSnackBar.rectangle(
                 'เข้าสู่ระบบสำเร็จ',
                 'ยินดีต้อนรับ : '+childrenprofile.login.username,
@@ -305,7 +319,7 @@ class _LoginPageState extends State<LoginPage> {
             ).show(
               context,
             );
-            isLoading = true;
+
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                     builder: (context) => const MainPageChidren(indexScreen: null,)));
@@ -320,12 +334,13 @@ class _LoginPageState extends State<LoginPage> {
             String json2 = jsonEncode(busdetails.toMap());
             await getSharedPreferences.setBus(json2);
             await getSharedPreferences.setNum_plate(busdetails.num_plate);
-
+            isLoading = false;
             Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                     builder: (context) => const MainPageDriver()));
           }
         }else{
+          isLoading = false;
           AnimatedSnackBar.rectangle(
             'เกิดข้อผิดพลาด',
             'ชื่อผู้ใช้หรือรหัสผิด',

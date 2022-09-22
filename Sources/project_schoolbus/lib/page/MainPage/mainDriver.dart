@@ -8,6 +8,7 @@ import '../Driver/Children/ChildrenPage.dart';
 import '../Driver/Contract/ApplicationPage.dart';
 import '../Driver/HomePage/HomeDriverPage.dart';
 import '../Driver/Profile/MenuProfilePage.dart';
+import '../LoginPage/loginPage.dart';
 
 
 class MainPageDriver extends StatefulWidget {
@@ -42,23 +43,21 @@ class _MainRegisterState extends State<MainPageDriver>{
         /// Home
         SalomonBottomBarItem(
           icon: const Icon(CupertinoIcons.home),
-          title: const Text("Home"),
+          title: const Text("หน้าแรก" ,style:TextStyle( fontFamily: 'Kanit'),),
           selectedColor: Color(0xffe3a510),
         ),
 
         /// Children
         SalomonBottomBarItem(
           icon: Icon(Icons.child_care),
-          title: Text("Children"),
+          title: Text("รายการเด็ก",style:TextStyle( fontFamily: 'Kanit')),
           selectedColor: Color(0xffe3a510),
         ),
 
         /// Activity
         SalomonBottomBarItem(
-          icon: const ImageIcon(
-            AssetImage("images/application_icon.png"),
-          ),
-          title: Text("Activity"),
+          icon: Icon(Icons.airline_seat_recline_extra),
+          title: Text("การขึ้นลงรถ",style:TextStyle( fontFamily: 'Kanit')),
           selectedColor: Color(0xffe3a510),
         ),
 
@@ -67,14 +66,14 @@ class _MainRegisterState extends State<MainPageDriver>{
           icon: const ImageIcon(
             AssetImage("images/application_icon.png"),
           ),
-          title: Text("Contract"),
+          title: Text("รายการสัญญา",style:TextStyle( fontFamily: 'Kanit')),
           selectedColor: Color(0xffe3a510),
         ),
 
         /// Profile
         SalomonBottomBarItem(
           icon: Icon(CupertinoIcons.person),
-          title: Text("Profile"),
+          title: Text("โปรไฟล์",style:TextStyle( fontFamily: 'Kanit')),
           selectedColor: Color(0xffe3a510),
         ),
       ],

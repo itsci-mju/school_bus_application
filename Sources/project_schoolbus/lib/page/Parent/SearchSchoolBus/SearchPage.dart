@@ -4,8 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import '../../../manager/SchoolManager.dart';
 import '../../../model/SchoolModel.dart';
+import '../../LoginPage/loginPage.dart';
 import 'List_SearchSchoolBus.dart';
-
+import '../../../importer.dart';
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
 
@@ -14,6 +15,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class SearchPageState extends State<SearchPage> {
+  String Firstname = getSharedPreferences.getFirstname() ?? '';
   List<School> schools = [];
   String query = '';
   Timer? debouncer;
@@ -56,7 +58,23 @@ class SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         // The search area here
           backgroundColor: Colors.amber,
-          title: Container(
+          leading: new IconButton(
+            icon: new Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () {
+                      if(Firstname != ""){
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const  MyHomePage(indexScreen: null,)));
+                      }else{
+                        Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) => const LoginPage()));
+                      }
+
+              }
+          ),
+          title:
+            Container(
             width: double.infinity,
             height: 40,
             decoration: BoxDecoration(
@@ -68,20 +86,22 @@ class SearchPageState extends State<SearchPage> {
                 decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: query.isNotEmpty ? GestureDetector(
-                      child: IconButton(
-                        icon: const Icon(Icons.clear),
-                        onPressed: () {
-                          controller.clear();
-                          searchSchool('');
-                          FocusScope.of(context).requestFocus(FocusNode());
-                        },
-                      )) : null,
+                        child: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () {
+                            controller.clear();
+                            searchSchool('');
+                            FocusScope.of(context).requestFocus(FocusNode());
+                          },
+                        )) : null,
                     hintText: 'Search...',
                     hintStyle: style,
                     border: InputBorder.none),
               ),
             ),
-          )),
+          )
+      ),
+
       body: Column(
         children: <Widget>[
           Expanded(
