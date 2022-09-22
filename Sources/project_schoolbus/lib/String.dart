@@ -1,7 +1,7 @@
 
 class Strings {
-  static const String url = "http://192.168.184.9:8080/Project_Sch oolbus";
- // static const String url = "http://10.1.2.183:8080/Project_Schoolbus";
+  static const String url = "http://192.168.85.9:8080/Project_Schoolbus";
+  //static const String url = "http://10.1.2.183:8080/Project_Schoolbus";
   //static const String url = "http://192.168.137.9:8080/Project_Schoolbus";
 
   //*************************** Parent ******************************//
