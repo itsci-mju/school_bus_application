@@ -159,6 +159,7 @@ class _DriverPersonalState extends State<ProfileDriverPage> {
                           children: [
                             Expanded(
                               child: TextFormField(
+                                readOnly: true,
                                 controller: _ctrlUsername,
                                 validator: (value) {
                                   String pettern = r'^[\d\w]{8,16}$';
@@ -186,6 +187,7 @@ class _DriverPersonalState extends State<ProfileDriverPage> {
                             ),
                             Expanded(
                               child: TextFormField(
+                                readOnly: true,
                                 controller: _ctrlPassword,
                                 validator: (value) {
                                   RegExp PasswordRex =
@@ -215,6 +217,7 @@ class _DriverPersonalState extends State<ProfileDriverPage> {
                           height: height,
                         ),
                         TextFormField(
+                          readOnly: true,
                           controller: _ctrlIDCard,
                           keyboardType: TextInputType.number,
                           inputFormatters: <TextInputFormatter>[

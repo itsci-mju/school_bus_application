@@ -61,13 +61,6 @@ class _MorningState extends State<MorningPage>{
           child: ListChildrenActivity()
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          saveActivity();
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.check_circle_outline),
-      ),
     );
   }
 

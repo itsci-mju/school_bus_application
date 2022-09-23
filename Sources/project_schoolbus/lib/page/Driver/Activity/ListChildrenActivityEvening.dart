@@ -8,6 +8,7 @@ import 'package:project_schoolbus/model/ActivityModel.dart';
 import '../../../importer.dart';
 import '../../../manager/ActivityManager.dart';
 import '../../../manager/ContractManager.dart';
+import '../../../manager/DriverManager.dart';
 import '../../../model/ContractModel.dart';
 import '../../AlertDialog.dart';
 import '../../MainPage/mainDriver.dart';
@@ -23,10 +24,12 @@ class _ListChildrenActivityEveningState extends State<ListChildrenActivityEvenin
   final _ctrlreason = TextEditingController();
   ContractManager manager = ContractManager();
   ActivityManager amanager = ActivityManager();
+  DriverManager dmanager = DriverManager();
   List<Contract>? listChildren;
   bool isLoading = true;
   String num_plate = getSharedPreferences.getNum_plate() ?? '';
-
+  String b = getSharedPreferences.getBus() ?? '';
+  Bus? bus;
   String? reason;
   bool status = true;
   List<Activity>? listActivityis1;
@@ -34,10 +37,13 @@ class _ListChildrenActivityEveningState extends State<ListChildrenActivityEvenin
   void initState() {
     getlistActivityis1();
     refreshChildren();
-
+    getProfile();
     super.initState();
   }
-
+  void getProfile(){
+    Map<String, dynamic> map2 = jsonDecode(b);
+    bus = Bus.fromJson(map2);
+  }
   void refreshChildren() async {
     setState(() {
       isLoading = true;
@@ -463,18 +469,36 @@ class _ListChildrenActivityEveningState extends State<ListChildrenActivityEvenin
       await getSharedPreferences.init();
       logger.e(result);
       if(result != "0") {
-        AnimatedSnackBar.rectangle(
-            'สำเร็จ',
-            'คุณเพิ่มกิจกรรมสำเร็จ',
-            type: AnimatedSnackBarType.success,
-            brightness: Brightness.light,
-            duration : const Duration(seconds: 5)
-        ).show(
-          context,
-        );
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => ActivityPage()));
+        bus!.bus_latitude =_position!.latitude.toString();
+        bus!.bus_longitude =_position!.longitude.toString();
+        String results = await dmanager.updateBuslocation(bus!);
+        if(results != "0") {
+          AnimatedSnackBar.rectangle(
+              'สำเร็จ',
+              'คุณเพิ่มกิจกรรมสำเร็จ',
+              type: AnimatedSnackBarType.success,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ActivityPage()));
+
+        }else{
+          AnimatedSnackBar.rectangle(
+              'เกิดข้อผิดพลาด',
+              'เกิดข้อผิดพลาดในการเพิ่มกิจกรรมสำเร็จ',
+              type: AnimatedSnackBarType.error,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          isLoading = false;
+        }
       }else{
         AnimatedSnackBar.rectangle(
             'เกิดข้อผิดพลาด',
@@ -486,6 +510,7 @@ class _ListChildrenActivityEveningState extends State<ListChildrenActivityEvenin
           context,
         );
         isLoading = false;
+
       }
     }catch(error){
       print(error);
@@ -499,18 +524,36 @@ class _ListChildrenActivityEveningState extends State<ListChildrenActivityEvenin
       await getSharedPreferences.init();
       logger.e(result);
       if(result != "0") {
-        AnimatedSnackBar.rectangle(
-            'สำเร็จ',
-            'คุณแก้ไขกิจกรรมสำเร็จ',
-            type: AnimatedSnackBarType.success,
-            brightness: Brightness.light,
-            duration : const Duration(seconds: 5)
-        ).show(
-          context,
-        );
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => ActivityPage()));
+        bus!.bus_latitude =_position!.latitude.toString();
+        bus!.bus_longitude =_position!.longitude.toString();
+        String results = await dmanager.updateBuslocation(bus!);
+        if(results != "0") {
+          AnimatedSnackBar.rectangle(
+              'สำเร็จ',
+              'คุณเพิ่มกิจกรรมสำเร็จ',
+              type: AnimatedSnackBarType.success,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ActivityPage()));
+
+        }else{
+          AnimatedSnackBar.rectangle(
+              'เกิดข้อผิดพลาด',
+              'เกิดข้อผิดพลาดในการเพิ่มกิจกรรมสำเร็จ',
+              type: AnimatedSnackBarType.error,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          isLoading = false;
+        }
       }else{
         AnimatedSnackBar.rectangle(
             'เกิดข้อผิดพลาด',
@@ -522,13 +565,10 @@ class _ListChildrenActivityEveningState extends State<ListChildrenActivityEvenin
           context,
         );
         isLoading = false;
-
       }
     }catch(error){
       print(error);
     }
-
-
   }
 
   String CalAge(DateTime date){

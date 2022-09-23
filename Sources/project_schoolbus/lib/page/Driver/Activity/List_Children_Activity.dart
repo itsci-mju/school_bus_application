@@ -478,6 +478,7 @@ class _ListChildrenActivityState extends State<ListChildrenActivity>{
         bus!.bus_longitude =_position!.longitude.toString();
         String results = await dmanager.updateBuslocation(bus!);
         if(results != "0") {
+
           AnimatedSnackBar.rectangle(
               'สำเร็จ',
               'คุณเพิ่มกิจกรรมสำเร็จ',
@@ -491,7 +492,6 @@ class _ListChildrenActivityState extends State<ListChildrenActivity>{
               MaterialPageRoute(
                   builder: (context) =>
                       ActivityPage()));
-
         }else{
           AnimatedSnackBar.rectangle(
               'เกิดข้อผิดพลาด',
@@ -534,18 +534,33 @@ class _ListChildrenActivityState extends State<ListChildrenActivity>{
         bus!.bus_latitude =_position!.latitude.toString();
         bus!.bus_longitude =_position!.longitude.toString();
         String results = await dmanager.updateBuslocation(bus!);
-        AnimatedSnackBar.rectangle(
-            'สำเร็จ',
-            'คุณแก้ไขกิจกรรมสำเร็จ',
-            type: AnimatedSnackBarType.success,
-            brightness: Brightness.light,
-            duration : const Duration(seconds: 5)
-        ).show(
-          context,
-        );
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => ActivityPage()));
+        if(results != "0") {
+          AnimatedSnackBar.rectangle(
+              'สำเร็จ',
+              'คุณเพิ่มกิจกรรมสำเร็จ',
+              type: AnimatedSnackBarType.success,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) =>
+                      ActivityPage()));
+
+        }else{
+          AnimatedSnackBar.rectangle(
+              'เกิดข้อผิดพลาด',
+              'เกิดข้อผิดพลาดในการเพิ่มกิจกรรมสำเร็จ',
+              type: AnimatedSnackBarType.error,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          isLoading = false;
+        }
       }else{
         AnimatedSnackBar.rectangle(
             'เกิดข้อผิดพลาด',
@@ -557,13 +572,10 @@ class _ListChildrenActivityState extends State<ListChildrenActivity>{
           context,
         );
         isLoading = false;
-
       }
     }catch(error){
       print(error);
     }
-
-
   }
 
   String CalAge(DateTime date){

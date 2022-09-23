@@ -902,6 +902,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                     const SizedBox(
                       height: height,
                     ),
+
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: _cardList.length,
@@ -997,65 +998,87 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
     setState(() => isLoading = true);
     if(_formKey.currentState!.validate()){
       if(file1 == null){
+        setState(() => isLoading = false);
         alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปภาพประจำตัว');
       }else {
         if(file2 == null){
+          setState(() => isLoading = false);
           alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปภาพรถของท่าน');
         }else{
           if(file3 == null){
+            setState(() => isLoading = false);
             alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปบัตรอณุญาตขับรถยนต์ส่วนบุคคล');
           }else{
             if(file4 == null){
+              setState(() => isLoading = false);
               alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปใบอณุาตขับขี่รถรับส่ง');
             }else{
-              await uploadFile1();
-              await uploadFile2();
-              await uploadFile3();
-              await uploadFile4();
-              try{
-                await _getCurrentLocation();
-                List<String> s = _ctrlbirthday.text.split("/");
-                DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
-                List<String> s2 = _ctrlbirthday.text.split("/");
-                DateTime p = DateTime(int.parse(s2[0]), int.parse(s2[1]), int.parse(s2[2]));
-                Driver driver = Driver(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-                    _ctrlemail.text,_ctrlgroupline.text,_ctrladdress.text,imageprofile.text,driver_license.text,student_bus_license.text
-                    ,Login(_ctrlUsername.text,_ctrlPassword.text,"3"));
-                Bus bus = Bus(_ctrlnum_plate.text,_ctrlprovince.text,_ctrlbrand.text,p,int.parse(_ctrlseats_amount.text),_position!.latitude.toString(),_position!.longitude.toString(),1,"",image_Bus.text,driver);
-                String result = await manager.doRegisrerDriver(bus);
-                var logger = Logger();
-                await getSharedPreferences.init();
-                logger.e(result);
+              if(listaroute!.isEmpty ||  listaroute! == '' || listaroute! == null){
+                setState(() => isLoading = false);
+                alertDialogApp.showAlertDialog(context, 'กรุณากรอกข้อมูลโรงเรียนอยากน้อย 1 โรงเรียน');
+              }else{
+                await uploadFile1();
+                await uploadFile2();
+                await uploadFile3();
+                await uploadFile4();
+                try{
+                  await _getCurrentLocation();
+                  List<String> s = _ctrlbirthday.text.split("/");
+                  DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
+                  List<String> s2 = _ctrlbirthday.text.split("/");
+                  DateTime p = DateTime(int.parse(s2[0]), int.parse(s2[1]), int.parse(s2[2]));
+                  Driver driver = Driver(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
+                      _ctrlemail.text,_ctrlgroupline.text,_ctrladdress.text,imageprofile.text,driver_license.text,student_bus_license.text
+                      ,Login(_ctrlUsername.text,_ctrlPassword.text,"3"));
+                  Bus bus = Bus(_ctrlnum_plate.text,_ctrlprovince.text,_ctrlbrand.text,p,int.parse(_ctrlseats_amount.text),_position!.latitude.toString(),_position!.longitude.toString(),1,"",image_Bus.text,driver);
+                  String result = await manager.doRegisrerDriver(bus);
+                  var logger = Logger();
+                  await getSharedPreferences.init();
+                  logger.e(result);
 
-                if(result != "0") {
-                  bool resultr = false ;
-                  for(Routes routes in listaroute!){
-                    routes.route_ID= "";
-                    routes.bus = bus;
-                    String resultroute = await routeManager.doAddRoute(routes);
-                    if(resultroute!= "0"){
-                      resultr = true;
-                    }else{
-                      resultr = false;
-                      break;
+                  if(result != "0") {
+                    bool resultr = false ;
+                    for(Routes routes in listaroute!){
+                      routes.route_ID= "";
+                      routes.bus = bus;
+                      String resultroute = await routeManager.doAddRoute(routes);
+                      if(resultroute!= "0"){
+                        resultr = true;
+                      }else{
+                        resultr = false;
+                        break;
+                      }
                     }
-                  }
 
 
-                  if(resultr){
-                    isLoading = false;
-                    AnimatedSnackBar.rectangle(
-                        'สำเร็จ',
-                        'คุณสมัครสมาชิกสำเร็จ',
-                        type: AnimatedSnackBarType.success,
-                        brightness: Brightness.light,
-                        duration : const Duration(seconds: 5)
-                    ).show(
-                      context,
-                    );
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage()));
+                    if(resultr){
+                      isLoading = false;
+                      AnimatedSnackBar.rectangle(
+                          'สำเร็จ',
+                          'คุณสมัครสมาชิกสำเร็จ',
+                          type: AnimatedSnackBarType.success,
+                          brightness: Brightness.light,
+                          duration : const Duration(seconds: 5)
+                      ).show(
+                        context,
+                      );
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                              builder: (context) => const LoginPage()));
+                    }else{
+                      isLoading = false;
+                      AnimatedSnackBar.rectangle(
+                          'เกิดข้อผิดพลาด',
+                          'เกิดข้อผิดพลาดในการสมัครสมาชิก',
+                          type: AnimatedSnackBarType.error,
+                          brightness: Brightness.light,
+                          duration : const Duration(seconds: 5)
+                      ).show(
+                        context,
+                      );
+
+
+                    }
                   }else{
                     isLoading = false;
                     AnimatedSnackBar.rectangle(
@@ -1067,24 +1090,12 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                     ).show(
                       context,
                     );
-
-
                   }
-                }else{
-                  isLoading = false;
-                  AnimatedSnackBar.rectangle(
-                      'เกิดข้อผิดพลาด',
-                      'เกิดข้อผิดพลาดในการสมัครสมาชิก',
-                      type: AnimatedSnackBarType.error,
-                      brightness: Brightness.light,
-                      duration : const Duration(seconds: 5)
-                  ).show(
-                    context,
-                  );
+                }catch(error){
+                  print(error);
                 }
-              }catch(error){
-                print(error);
               }
+
             }
           }
         }

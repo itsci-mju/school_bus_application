@@ -55,13 +55,6 @@ class _EveningState extends State<EveningPage>{
             child: ListChildrenActivityEvening()
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          saveActivity();
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.check_circle_outline),
-      ),
     );
   }
 

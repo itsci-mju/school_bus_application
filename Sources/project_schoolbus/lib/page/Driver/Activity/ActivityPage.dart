@@ -25,6 +25,7 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
     Map<String, dynamic> map2 = jsonDecode(b);
     bus = Bus.fromJson(map2);
   }
+  final now = DateTime.now();
 
   @override
   void initState() {
@@ -50,7 +51,7 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Activity Page"),
+        title: const Text("การขึ้นรถ-ลงรถ"),
         toolbarHeight: 60,
         shape: const RoundedRectangleBorder(
             borderRadius:  BorderRadius.only(
@@ -69,6 +70,7 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
       backgroundColor: LightColors.kLightYellow,
       body: DefaultTabController(
           length: 2,
+
           child: Column(
             children: <Widget>[
               Material(
@@ -84,11 +86,11 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            ImageIcon(
-                              AssetImage("images/application_icon.png"),
+                            Icon(
+                             Icons.wb_sunny,
                             ),
                             SizedBox(width: 10,),
-                            Text('Morning',style: TextStyle(
+                            Text('รอบเช้า',style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800),)
                           ],
@@ -98,11 +100,11 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
-                            ImageIcon(
-                              AssetImage("images/application_icon.png"),
+                            Icon(
+                              Icons.wb_twilight,
                             ),
                             SizedBox(width: 10,),
-                            Text('Evening',style: TextStyle(
+                            Text('รอบเย็น',style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800),)
                           ],

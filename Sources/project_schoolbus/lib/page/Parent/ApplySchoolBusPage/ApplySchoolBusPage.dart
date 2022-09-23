@@ -5,6 +5,7 @@ import 'package:project_schoolbus/manager/ContractManager.dart';
 import 'package:project_schoolbus/page/MainPage/mainDriver.dart';
 import '../../../importer.dart';
 import '../../../model/ContractModel.dart';
+import '../../AlertDialog.dart';
 import 'BottonWidget.dart';
 import 'ShowMap.dart';
 
@@ -583,6 +584,7 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10.0),
                                   child: TextFormField(
+                                    readOnly: true,
                                     controller: Address,
                                     maxLines: 4, //or null
                                     decoration: const InputDecoration.collapsed(
@@ -712,47 +714,62 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
 
     setState(() => time = newTime);
   }
+  AlertDialogApp alertDialogApp =AlertDialogApp();
   ContractManager contractManager = ContractManager();
   Future doApplySchoolBus() async{
     try{
-      DateTime now = DateTime.now();
-      List<String> indexChildren = selectedChildrenValue!.split(" : ");
-      List<String> indexRoute = selectedRouteValue!.split(" : ");
-      Contract contract = Contract("",now,dateRange!.start,dateRange!.end, latitude!,longitude!,timetxt!,null,1,
-          listChildrens![int.parse(indexChildren[0])-1],listRoutesBySchoolName![int.parse(indexRoute[0])-1]);
-      print(contract.toString());
-      String result = await contractManager.doAddContract(contract);
-      var logger = Logger();
-      await getSharedPreferences.init();
-      logger.e(result);
-      if(result != "0") {
-        getSharedPreferences.removeLatitude();
-        getSharedPreferences.removeLongitude();
-        getSharedPreferences.removeAddress();
-        AnimatedSnackBar.rectangle(
-            'สำเร็จ',
-            'คุณร้องขอขึ้นรถสำเร็จ',
-            type: AnimatedSnackBarType.success,
-            brightness: Brightness.light,
-            duration : const Duration(seconds: 5)
-        ).show(
-          context,
-        );
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-                builder: (context) => MyHomePage(indexScreen: null)));
+      if(selectedChildrenValue ==''||selectedChildrenValue == null ){
+        alertDialogApp.showAlertDialog(context, 'กรุณาเลือกบุตรของท่าน');
+      }else if(selectedSchoolValue == ''||selectedSchoolValue == null ){
+        alertDialogApp.showAlertDialog(context, 'กรุณาเลือกโรงเรียน');
+      }else if(selectedRouteValue == ''||selectedRouteValue == null ){
+        alertDialogApp.showAlertDialog(context, 'กรุณาเลือกเส้นทาง');
+      }else if(ServiceTime == '' ||ServiceTime == null ){
+        alertDialogApp.showAlertDialog(context, 'กรุณาเลือกวันที่ให้เริ่มบริการ-สิ้นสุบริการ');
+      }else if(timetxt == '' ||timetxt == null ){
+        alertDialogApp.showAlertDialog(context, 'กรุณาเลือกเวลาให้เริ่ม');
+      }else if(Address == '' ||Address == null ){
+        alertDialogApp.showAlertDialog(context, 'กรุณากรอกที่อยู่ที่ต้องการขึ้นรถ');
       }else{
-        AnimatedSnackBar.rectangle(
-            'เกิดข้อผิดพลาด',
-            'เกิดข้อผิดพลาดในการร้องขอ',
-            type: AnimatedSnackBarType.error,
-            brightness: Brightness.light,
-            duration : const Duration(seconds: 5)
-        ).show(
-          context,
-        );
-        isLoading = false;
+        DateTime now = DateTime.now();
+        List<String> indexChildren = selectedChildrenValue!.split(" : ");
+        List<String> indexRoute = selectedRouteValue!.split(" : ");
+        Contract contract = Contract("",now,dateRange!.start,dateRange!.end, latitude!,longitude!,timetxt!,null,1,
+            listChildrens![int.parse(indexChildren[0])-1],listRoutesBySchoolName![int.parse(indexRoute[0])-1]);
+        print(contract.toString());
+        String result = await contractManager.doAddContract(contract);
+        var logger = Logger();
+        await getSharedPreferences.init();
+        logger.e(result);
+        if(result != "0") {
+          getSharedPreferences.removeLatitude();
+          getSharedPreferences.removeLongitude();
+          getSharedPreferences.removeAddress();
+          AnimatedSnackBar.rectangle(
+              'สำเร็จ',
+              'คุณร้องขอขึ้นรถสำเร็จ',
+              type: AnimatedSnackBarType.success,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => MyHomePage(indexScreen: null)));
+        }else{
+          AnimatedSnackBar.rectangle(
+              'เกิดข้อผิดพลาด',
+              'เกิดข้อผิดพลาดในการร้องขอ',
+              type: AnimatedSnackBarType.error,
+              brightness: Brightness.light,
+              duration : const Duration(seconds: 5)
+          ).show(
+            context,
+          );
+          isLoading = false;
 
+        }
       }
     }catch(error){
       print(error);

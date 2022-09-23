@@ -461,6 +461,7 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                               height: 10,
                                             ),
                                             Firstname != ''
+                                              ?listRoutes![0].bus.status_bus != 2
                                               ?listRoutes![0].bus.seats_amount == l![0]
                                             ?Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -500,7 +501,19 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                                 ),
                                               ),
                                             )
-                                            :const SizedBox(height: 10,),
+                                            :const Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                  'พักให้บริการ',
+                                                  style: TextStyle(
+                                                    color: Colors.deepOrange,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 18,
+                                                  )
+                                              )
+                                            ):const SizedBox(height: 10,),
+
+                                            SizedBox(height: 20,)
                                           ],
                                         ),
 

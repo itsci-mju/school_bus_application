@@ -441,6 +441,7 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
     setState(() => isLoading = true);
     if(_formKey.currentState!.validate()){
       if(file == null){
+        setState(() => isLoading = false);
         alertDialogApp.showAlertDialog(context, 'กรุณาอัปโหลดรูปภาพประจำตัว');
       }else{
       try{
@@ -456,7 +457,7 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
         logger.e(result);
         if(result != "0")  {
 
-          isLoading = false;
+          setState(() => isLoading = false);
           AnimatedSnackBar.rectangle(
               'สำเร็จ',
               'คุณสมัครสมาชิกสำเร็จ',
@@ -479,7 +480,7 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
           ).show(
             context,
           );
-          isLoading = false;
+          setState(() => isLoading = false);
 
         }
       }catch(error){
