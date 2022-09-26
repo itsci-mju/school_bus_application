@@ -883,7 +883,6 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                     ),
                     TextFormField(
                       controller: _crounddetail,
-                      keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'กรุณากรอกรายละเอียดเส้นทาง';

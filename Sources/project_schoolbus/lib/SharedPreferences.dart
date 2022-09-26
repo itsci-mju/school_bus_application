@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class getSharedPreferences {
@@ -118,10 +120,10 @@ class getSharedPreferences {
 
   static String? getContract() => prefs?.getString(_keyContract);
 
-  static Future setnumPage(int numpage) async =>
-      await prefs!.setInt(_keyNumPage, numpage);
+  static Future setnumPage(String numpage) async =>
+      await prefs!.setString(_keyNumPage, numpage);
 
-  static int? getnumPage() => prefs?.getInt(_keyNumPage);
+  static String? getnumPage() => prefs?.getString(_keyNumPage);
 
   static Future setRequestID(String RequestID) async =>
       await prefs!.setString(_keyRequestID, RequestID);
