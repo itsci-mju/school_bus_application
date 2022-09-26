@@ -79,8 +79,8 @@ class _UpdateServicePageState extends State<UpdateServicePage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 30.0,vertical: 20.0),
                   child: SizedBox(
-                    height: 450,
-                    width: 350,
+                    height: 500,
+                    width: 400,
                     child: Column(
                       children: [
                         Center(

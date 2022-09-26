@@ -125,18 +125,28 @@ class _viewActivityState extends State<viewActivitypage> {
                         ),
                         SizedBox(width: 15.0,),
                         listActivity![index].status_children ==  "ไม่ขึ้นรถ"?
-                           const Align(
-                             alignment: Alignment.center,
-                             child: Text(
-                               "ไม่ขึ้นรถ",
-
-                               style: TextStyle(
-                                 color: Colors.deepOrange,
-                                   fontSize: 20,
-                                   fontWeight: FontWeight.w600
-                               ),
-                             ),
-                           )
+                            Column(
+                              children:  [
+                                const Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    "ไม่ขึ้นรถ",
+                                    style: TextStyle(
+                                        color: Colors.deepOrange,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  "เนื่องจาก : "+listActivity![index].reason,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                  ),
+                                ),
+                              ],
+                            )
                        :Column(
                           children: [
                             Row(
@@ -183,12 +193,7 @@ class _viewActivityState extends State<viewActivitypage> {
                                   },
                                 ),
                                 SizedBox(width: 20.0,),
-                                Text(
-                                  listActivity![index].status_children,
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
+
                               ],
                             ),
                             SizedBox(width: 10.0,),
@@ -196,7 +201,7 @@ class _viewActivityState extends State<viewActivitypage> {
                             Row(
                               children: [
                                 const Text(
-                                  "ขึ้นลง",
+                                  "ลงเวลา",
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w600),
@@ -237,21 +242,20 @@ class _viewActivityState extends State<viewActivitypage> {
                                   },
                                 ),
                                 SizedBox(width: 20.0,),
-                                Text(
-                                  listActivity![index].status_children,
-                                  style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w600),
-                                ),
                               ],
-                            ): SizedBox(width: 0,),
+                            ): const Text(
+                              "ไม่พบการลงรถของเด็ก กรูณาติดต่อคนขับ ",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            ),
 
                             SizedBox(width: 10.0,),
                             Row(
                                children: [
-                                 Text(
+                                 const Text(
                                   "สถานะ : ",
-                                   style: const TextStyle(
+                                   style: TextStyle(
                                        fontSize: 14,
                                        fontWeight: FontWeight.w600),
                                  ),

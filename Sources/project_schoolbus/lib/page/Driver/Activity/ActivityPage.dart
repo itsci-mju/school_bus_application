@@ -1,10 +1,13 @@
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
 
 import '../../../importer.dart';
 import '../../../manager/DriverManager.dart';
 import '../../MainPage/mainDriver.dart';
 import '../HomePage/light_colors.dart';
 import 'Evening.dart';
+import 'ListChildrenActivityEvening.dart';
+import 'List_Children_Activity.dart';
 import 'Morning.dart';
 
 class ActivityPage extends StatefulWidget {
@@ -17,7 +20,7 @@ class ActivityPage extends StatefulWidget {
 class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
-  int _selectedTab = 0;
+  int _selectedTab = 1;
   String b = getSharedPreferences.getBus() ?? '';
   Bus? bus;
 
@@ -32,9 +35,9 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
     super.initState();
     getProfile();
 
-   /* Future.delayed(Duration(minutes: 1), (){
+    Future.delayed(Duration(minutes: 1), (){
       doupdatebus();
-    });*/
+    });
 
     _tabController = TabController(vsync: this, length: 2);
 
@@ -46,9 +49,13 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
       }
     });
   }
+  DateTime d =DateTime.now();
 
   @override
   Widget build(BuildContext context) {
+   int.parse(DateFormat('HH').format(d))  > 12 ?
+    _tabController!.animateTo(1):
+    _tabController!.animateTo(0);
     return Scaffold(
       appBar: AppBar(
         title: const Text("การขึ้นรถ-ลงรถ"),
@@ -70,7 +77,7 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
       backgroundColor: LightColors.kLightYellow,
       body: DefaultTabController(
           length: 2,
-
+          initialIndex: 1,
           child: Column(
             children: <Widget>[
               Material(
@@ -121,12 +128,12 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
                     SizedBox(
                         height: MediaQuery.of(context).size.height*0.74,
                         width: 400,
-                        child: const MorningPage()
+                        child: const ListChildrenActivity()
                     ),
                     SizedBox(
                         height: MediaQuery.of(context).size.height*0.74,
                         width: 400,
-                        child: const EveningPage()
+                        child: const ListChildrenActivityEvening()
                     ),
                   ],
                 ),
