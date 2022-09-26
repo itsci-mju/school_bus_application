@@ -33,7 +33,6 @@ class _MainRegisterState extends State<HomePageChidren> {
 
   void getContractDetails() {
     manager.getContractDetailsbychildren(c!.IDCard).then((value) async => {
-      // await getSharedPreferences.setSchoolID(contract!.routes.school.school_ID),
       setState(() {
         contract = value;
         isLoading = false;
@@ -71,150 +70,164 @@ class _MainRegisterState extends State<HomePageChidren> {
           child: Column(
             children: [
               ChildrenAddbar(),
-              Padding(
-                  padding: EdgeInsets.all(8.0)
-                ,child: Row(
-                children: [
-                  Text(
-                    "รายละเอียดคนขับรถรับส่ง : ",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w800)
+              contract! != null ?
+                  Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.all(8.0)
+                        ,child: Row(
+                        children: [
+                          Text(
+                              "รายละเอียดคนขับรถรับส่ง : ",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w800)
 
-                  ),
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
-                    child: InkWell(
-                      child: Image.asset(
-                        'images/Linemass.png',
-                        height: 30.0,
-                        fit: BoxFit.cover,
-                      ),
-                      onTap: ()async {
-                        String url = contract!.routes.bus.driver.groupline;
-                        var urllaunchable = await canLaunch(url);
-                        if(urllaunchable){
-                          await launch(url);
-                        }else{
-                          print("URL can't be launched.");
-                        }
-                      },
-                    ),
-                  )
-                ],
-              ),
-              ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(8, 1, 0, 0),
-                child: Row(
-                  children: [
-                    Text(
-                        contract!.routes.bus.driver.firstname,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600)
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    Text(
-                        contract!.routes.bus.driver.lastname,
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500)
-                    ),
-                  ],
-                ),
-                ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(8, 1, 0, 5),
-                child: Row(
-                  children: [
-                    Text(
-                        CalAge(contract!.routes.bus.driver.birthday),
-                        textAlign: TextAlign.start,
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500)
-                    ),
-                    SizedBox(
-                      width: 10.0,
-                    ),
-                    RichText(
-                      text: TextSpan(
-                        style: DefaultTextStyle.of(context).style,
-                        children:  <TextSpan>[
-                          const TextSpan(text: "เบอร์โทร : ", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
-                          TextSpan(text: contract!.routes.bus.driver.phone, style: TextStyle(fontSize: 18))
-                        ],
-
-                      ),
-                    ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: InkWell(
-                          onTap: (){
-                            Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        MainPageChidren(indexScreen: null,)));
-                          },
-                          child: Container(
-                            width: 80,
-                            height: 40,
-                            child: Row(
-                              children: [
-                                Icon(Icons.refresh, color: Color(0xffa3d064),),
-                                Text("รีเฟรช",style: TextStyle(fontSize: 18))
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: Color(0xffa3d064),
-                                    width: 1
-                                )
-                            ),
                           ),
-                        )
-                    ),),
-                    SizedBox(
-                      width: 20.0,
-                    ),
+                          Padding(
+                            padding: EdgeInsets.fromLTRB(40, 0, 0, 0),
+                            child: InkWell(
+                              child: Image.asset(
+                                'images/Linemass.png',
+                                height: 30.0,
+                                fit: BoxFit.cover,
+                              ),
+                              onTap: ()async {
+                                String url = contract!.routes.bus.driver.groupline;
+                                var urllaunchable = await canLaunch(url);
+                                if(urllaunchable){
+                                  await launch(url);
+                                }else{
+                                  print("URL can't be launched.");
+                                }
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(8, 1, 0, 0),
+                        child: Row(
+                          children: [
+                            Text(
+                                contract!.routes.bus.driver.firstname,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.w600)
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(
+                                contract!.routes.bus.driver.lastname,
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500)
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.fromLTRB(8, 1, 0, 5),
+                        child: Row(
+                          children: [
+                            Text(
+                                CalAge(contract!.routes.bus.driver.birthday),
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500)
+                            ),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                style: DefaultTextStyle.of(context).style,
+                                children:  <TextSpan>[
+                                  const TextSpan(text: "เบอร์โทร : ", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
+                                  TextSpan(text: contract!.routes.bus.driver.phone, style: TextStyle(fontSize: 18))
+                                ],
 
-                  ],
+                              ),
+                            ),
+                            Expanded(
+                              child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: InkWell(
+                                    onTap: (){
+                                      Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MainPageChidren(indexScreen: null,)));
+                                    },
+                                    child: Container(
+                                      width: 80,
+                                      height: 40,
+                                      child: Row(
+                                        children: [
+                                          Icon(Icons.refresh, color: Color(0xffa3d064),),
+                                          Text("รีเฟรช",style: TextStyle(fontSize: 18))
+                                        ],
+                                      ),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(10),
+                                          border: Border.all(
+                                              color: Color(0xffa3d064),
+                                              width: 1
+                                          )
+                                      ),
+                                    ),
+                                  )
+                              ),),
+                            SizedBox(
+                              width: 20.0,
+                            ),
 
-                ),
-              ),
+                          ],
 
-              Container(
-                height: MediaQuery.of(context).size.height*0.53,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 2,
-                    color: Colors.black,  // red as border color
-                  ),
-                ),
-                child: GoogleMap(
-                  myLocationEnabled: true,
-                  mapType: MapType.normal,
-                  initialCameraPosition: CameraPosition(
-                    target: LatLng(double.parse(contract!.routes.bus.bus_latitude), double.parse(contract!.routes.bus.bus_longitude)),
-                    zoom: 16,
-                  ),
-                  onMapCreated: (GoogleMapController controller) {
-                    _controller.complete(controller);
-                  },
-                  markers: {
-                    Marker(
-                        markerId: MarkerId("1"),
-                        position:  LatLng(double.parse(contract!.routes.bus.bus_latitude), double.parse(contract!.routes.bus.bus_longitude)),
-                        infoWindow: InfoWindow(title: "ที่อยู่ปัจจุบันคนขับรถ")),
-                  },
+                        ),
+                      ),
 
+                      Container(
+                        height: MediaQuery.of(context).size.height*0.53,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 2,
+                            color: Colors.black,  // red as border color
+                          ),
+                        ),
+                        child: GoogleMap(
+                          myLocationEnabled: true,
+                          mapType: MapType.normal,
+                          initialCameraPosition: CameraPosition(
+                            target: LatLng(double.parse(contract!.routes.bus.bus_latitude), double.parse(contract!.routes.bus.bus_longitude)),
+                            zoom: 16,
+                          ),
+                          onMapCreated: (GoogleMapController controller) {
+                            _controller.complete(controller);
+                          },
+                          markers: {
+                            Marker(
+                                markerId: MarkerId("1"),
+                                position:  LatLng(double.parse(contract!.routes.bus.bus_latitude), double.parse(contract!.routes.bus.bus_longitude)),
+                                infoWindow: InfoWindow(title: "ที่อยู่ปัจจุบันคนขับรถ")),
+                          },
+
+                        ),
+                      )
+                    ],
+                  ):const Align(
+                alignment: Alignment.center,
+                child: Text(
+                    "ไม่มีข้อมูลคนขับรถ กรูณาส่งคำขอ",
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w600)
                 ),
               )
             ],
