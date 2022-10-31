@@ -26,9 +26,14 @@ class _ShowMapState extends State<ShowMap> {
   void initState(){
     super.initState();
     findLocation();
+
   }
 
   Future<void> findLocation() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.requestPermission();
+
     _currentLocation = await locationData();
     print('Lat = ${_currentLocation?.latitude}, Lng = ${_currentLocation?.longitude}' );
   }
@@ -39,6 +44,9 @@ class _ShowMapState extends State<ShowMap> {
     LocationPermission permission;
 
     // Test if location services are enabled.
+
+    permission = await Geolocator.requestPermission();
+
     serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
     if (!serviceEnabled) {
       serviceEnabled = await _geolocatorPlatform.isLocationServiceEnabled();
