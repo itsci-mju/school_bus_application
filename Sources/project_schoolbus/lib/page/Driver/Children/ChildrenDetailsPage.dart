@@ -67,7 +67,7 @@ class _ChildrenDetailsPageState extends State<Driver_ChildrenProfilePage> {
         child: SingleChildScrollView(
 
             child: SizedBox(
-          height: MediaQuery.of(context).size.width * 1.80,
+
           width: MediaQuery.of(context).size.width * 2,
           child: Card(
             child: Padding(
@@ -125,7 +125,7 @@ class _ChildrenDetailsPageState extends State<Driver_ChildrenProfilePage> {
                     height: 10.0,
                   ),
                   Text(
-                    contract!.routes.school.school_name,
+                    contract!.busStop.school.school_name,
                     style: const TextStyle(
                       fontSize: 20,
                     ),

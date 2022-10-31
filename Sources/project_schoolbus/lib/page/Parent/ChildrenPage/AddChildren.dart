@@ -29,6 +29,7 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
   final _ctrllineid = TextEditingController();
   final _ctrlimageprofile = TextEditingController();
   final _ckfilename = TextEditingController();
+  final _ctrlschool_name = TextEditingController();
   bool isLoading = false;
 
   UploadTask? task;
@@ -443,7 +444,7 @@ class _AddChildrenPageState extends State<AddChildrenPage> {
           List<String> s = _ctrlbirthday.text.split("/");
           DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
           Children children = Children(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-              _ctrlemail.text,_ctrllineid.text,_ctrlimageprofile.text,p!,Login(_ctrlUsername.text,_ctrlPassword.text,"2"));
+              _ctrlemail.text,_ctrllineid.text,_ctrlschool_name.text,_ctrlimageprofile.text,p!,Login(_ctrlUsername.text,_ctrlPassword.text,2));
           String result = await manager.addChildren(children);
           var logger = Logger();
           await getSharedPreferences.init();

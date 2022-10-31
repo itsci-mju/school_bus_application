@@ -32,6 +32,7 @@ class _ChildrenProfilePageState extends State<ChildrenProfilePage> {
   late final _ctrlemail = TextEditingController();
   late final _ctrllineid = TextEditingController();
   late final _ctrlimageprofile = TextEditingController();
+  final _ctrlschool_name = TextEditingController();
   UploadTask? task;
   File? file;
   String profileParent = getSharedPreferences.getProfile() ?? '';
@@ -443,7 +444,7 @@ class _ChildrenProfilePageState extends State<ChildrenProfilePage> {
         List<String> s = _ctrlbirthday.text.split("/");
         DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         Children children = Children(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-            _ctrlemail.text,_ctrllineid.text,_ctrlimageprofile.text,p!,Login(_ctrlUsername.text,_ctrlPassword.text,"2"));
+            _ctrlemail.text,_ctrllineid.text,_ctrlschool_name.text,_ctrlimageprofile.text,p!,Login(_ctrlUsername.text,_ctrlPassword.text,2));
         String result = await manager.editChildrenById(children);
         var logger = Logger();
         await getSharedPreferences.init();

@@ -37,7 +37,7 @@ class _ApplicationState extends State<ApplicationPage> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title: const Text("Application Page"),
+          title: const Text("รายการคำขอ"),
           toolbarHeight: 60,
           automaticallyImplyLeading: false,
           shape: const RoundedRectangleBorder(
@@ -70,7 +70,7 @@ class _ApplicationState extends State<ApplicationPage> with SingleTickerProvider
                               AssetImage("images/application_icon.png"),
                             ),
                             SizedBox(width: 10,),
-                            Text('Application',style: TextStyle(
+                            Text('คำขอขึ้นรถ',style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800),)
                           ],
@@ -84,7 +84,7 @@ class _ApplicationState extends State<ApplicationPage> with SingleTickerProvider
                               AssetImage("images/application_icon.png"),
                             ),
                             SizedBox(width: 10,),
-                            Text('RequestCancel',style: TextStyle(
+                            Text('คำขอยกเลิกสัญญา',style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w800),)
                           ],

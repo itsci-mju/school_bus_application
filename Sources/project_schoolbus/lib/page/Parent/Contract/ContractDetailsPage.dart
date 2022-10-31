@@ -120,7 +120,7 @@ class _ContractDetailsState extends State<ContractDetailsPage> {
                 ),
                 SizedBox(width: 35.0,),
                 Text(
-                  contract!.routes.school.school_name,
+                  contract!.busStop.school.school_name,
                   style: const TextStyle(
                     fontSize: 20,
                   ),
@@ -275,7 +275,7 @@ class _ContractDetailsState extends State<ContractDetailsPage> {
                         ),
                       ),
                       Text(
-                        contract!.routes.bus.num_plate+" "+contract!.routes.bus.province,
+                        contract!.busStop.bus.num_plate+" "+contract!.busStop.bus.province,
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -299,7 +299,7 @@ class _ContractDetailsState extends State<ContractDetailsPage> {
                         ),
                       ),
                       Text(
-                        contract!.routes.bus.brand,
+                        contract!.busStop.bus.brand,
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -316,7 +316,7 @@ class _ContractDetailsState extends State<ContractDetailsPage> {
                         ),
                       ),
                       Text(
-                        f.format(contract!.routes.bus.purchase_date),
+                        f.format(contract!.busStop.bus.purchase_date),
                         style: const TextStyle(
                           fontSize: 20,
                         ),
@@ -340,7 +340,7 @@ class _ContractDetailsState extends State<ContractDetailsPage> {
                     crossAxisAlignment : CrossAxisAlignment.start,
                     children: [
                       Text(
-                        contract!.routes.bus.driver.firstname+" "+contract!.routes.bus.driver.lastname,
+                        contract!.busStop.bus.driver.firstname+" "+contract!.busStop.bus.driver.lastname,
                         style: const TextStyle(
                           fontSize: 18,
                         ),
@@ -349,14 +349,14 @@ class _ContractDetailsState extends State<ContractDetailsPage> {
                       Row(
                         children: [
                           Text(
-                            CalAge(contract!.routes.bus.driver.birthday),
+                            CalAge(contract!.busStop.bus.driver.birthday),
                             style: const TextStyle(
                               fontSize: 18,
                             ),
                           ),
                           const SizedBox(width: 20.0,),
                           Text(
-                            "เบอร์โทร : "+contract!.routes.bus.driver.phone,
+                            "เบอร์โทร : "+contract!.busStop.bus.driver.phone,
                             style: const TextStyle(
                               fontSize: 18,
                             ),

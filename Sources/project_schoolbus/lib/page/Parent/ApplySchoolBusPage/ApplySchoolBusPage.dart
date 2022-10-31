@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'dart:math';
 
 import 'package:intl/intl.dart';
 import 'package:project_schoolbus/manager/ContractManager.dart';
@@ -31,7 +32,7 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
 
   DateTimeRange? dateRange;
 
-  List<Routes>? listRoutes;
+  List<BusStop>? listRoutes;
   List<String>? DropdownSchools = [];
   String? selectedSchoolValue;
 
@@ -83,11 +84,11 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
     });
   }
 
-  List<Routes>? listRoutesBySchoolName = [];
+  List<BusStop>? listRoutesBySchoolName = [];
   List<String>? DropdownRoutes = [];
   String? selectedRouteValue;
 
-  void getRoutesBySchoolName(String schoolvalue) {
+  /*void getRoutesBySchoolName(String schoolvalue) {
     var log = Logger();
     setState(() {
       isLoading = true;
@@ -97,14 +98,14 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
       listRoutesBySchoolName = value ,
       DropdownRoutes!.clear(),
       for(int i = 0 ; i < listRoutesBySchoolName!.length; i++){
-        DropdownRoutes!.add((i+1).toString()+" : "+listRoutesBySchoolName![i].route_details)
+        DropdownRoutes!.add((i+1).toString()+" : "+listRoutesBySchoolName![i].stop_time)
       },
       setState(() {
         isLoading = false;
         log.e("ddddddddddddddddd : "+DropdownRoutes.toString());
       })
     });
-  }
+  }*/
 
 
   @override
@@ -326,6 +327,7 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
                     const SizedBox(
                       height: 10,
                     ),
+
                     Center(
                       child: Container(
                         width: 350,
@@ -333,204 +335,6 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
                           border: Border.all(width: 1.0, color: const Color(
                               0xFFC9C9C9)),
                         ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 16,right: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey,width: 1),
-                            borderRadius: BorderRadius.circular(15)
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text(
-                              'กรุณาเลือกเด็ก: ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme
-                                    .of(context)
-                                    .hintColor,
-                              ),
-                            ),
-                            items: _addDividersAfterItems(DropdownChildrens!),
-                            underline: const SizedBox(),style: const TextStyle(
-                              color: Colors.black,fontSize: 16
-                          ),
-                            customItemsIndexes: _getDividersIndexes(),
-                            customItemsHeight: 4,
-                            value: selectedChildrenValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedChildrenValue = value as String;
-                              });
-                            },
-                            buttonHeight: 50,
-                            buttonWidth: 320,
-                            itemHeight: 40,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 16,right: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey,width: 1),
-                            borderRadius: BorderRadius.circular(15)
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text(
-                              'กรุณาเลือกโรงเรียน: ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme
-                                    .of(context)
-                                    .hintColor,
-                              ),
-                            ),
-                            items: _addDividersAfterItems(DropdownSchools!),
-                            underline: const SizedBox(),style: const TextStyle(
-                              color: Colors.black,fontSize: 16
-                          ),
-                            customItemsIndexes: _getDividersIndexes2(),
-                            customItemsHeight: 4,
-                            value: selectedSchoolValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedSchoolValue = value as String;
-                                getRoutesBySchoolName(selectedSchoolValue!);
-                              });
-                            },
-                            buttonHeight: 50,
-                            buttonWidth: 320,
-                            itemHeight: 40,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
-                      child: Container(
-                        padding: const EdgeInsets.only(left: 16,right: 16),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey,width: 1),
-                            borderRadius: BorderRadius.circular(15)
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton2(
-                            isExpanded: true,
-                            hint: Text(
-                              'กรุณาเลือกเส้นทาง: ',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Theme.of(context).hintColor,
-                              ),
-                            ),
-                            items:  _addDividersAfterItems(DropdownRoutes!),
-                            underline: const SizedBox(),style: const TextStyle(
-                              color: Colors.black,fontSize: 16
-                          ),
-                            customItemsIndexes: _getDividersIndexes3(),
-                            customItemsHeight: 4,
-                            value: selectedRouteValue,
-                            onChanged: (value) {
-                              setState(() {
-                                selectedRouteValue = value as String;
-                              });
-                            },
-                            buttonHeight: 50,
-                            buttonWidth: 320,
-                            itemHeight: 40,
-                            itemPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment : CrossAxisAlignment.start,
-                              children: [
-                                const Text('วันที่เริ่มให้บริการ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                                const SizedBox(height: 8),
-                                ButtonWidget(
-                                  onClicked: () => pickDateRange(context),
-                                  text: getFrom(),
-                                ),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward, color: Colors.black),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment : CrossAxisAlignment.start,
-                              children: [
-                                const Text('วันที่สิ้นสุดให้บริการ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
-                                const SizedBox(height: 8),
-                                ButtonWidget(
-                                  onClicked: () => pickDateRange(context),
-                                  text: getUntil(),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      width: 350,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        border: Border.all(width: 1.0, color: const Color(
-                            0xFFC9C9C9)),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: Center(
-                        child: Text(ServiceTime == null ? "ยังไม่เลือกวันที่" : ServiceTime.toString()),
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
-                      child: ElevatedButton(
-                          onPressed: () => pickTime(context),
-                          child: Text(getText(),style: const TextStyle(
-                            color : Colors.black,
-                          ),),
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: const Size.fromHeight(40),
-                            primary: Colors.white,
-                          )
                       ),
                     ),
                     const SizedBox(
@@ -601,6 +405,154 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
                     const SizedBox(
                       height: 10,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 16,right: 16),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey,width: 1),
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            hint: Text(
+                              'กรุณาเลือกเด็ก: ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme
+                                    .of(context)
+                                    .hintColor,
+                              ),
+                            ),
+                            items: _addDividersAfterItems(DropdownChildrens!),
+                            underline: const SizedBox(),style: const TextStyle(
+                              color: Colors.black,fontSize: 16
+                          ),
+                            customItemsIndexes: _getDividersIndexes(),
+                            customItemsHeight: 4,
+                            value: selectedChildrenValue,
+                            onChanged: (value) {
+                              setState(() {
+
+                                selectedChildrenValue = value as String;
+                              });
+                            },
+                            buttonHeight: 50,
+                            buttonWidth: 320,
+                            itemHeight: 40,
+                            itemPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 20),
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 16,right: 16),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey,width: 1),
+                            borderRadius: BorderRadius.circular(15)
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton2(
+                            isExpanded: true,
+                            hint: Text(
+                              'กรุณาเลือกโรงเรียน: ',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Theme
+                                    .of(context)
+                                    .hintColor,
+                              ),
+                            ),
+                            items: _addDividersAfterItems(DropdownSchools!),
+                            underline: const SizedBox(),style: const TextStyle(
+                              color: Colors.black,fontSize: 16
+                          ),
+                            customItemsIndexes: _getDividersIndexes2(),
+                            customItemsHeight: 4,
+                            value: selectedSchoolValue,
+                            onChanged: (value) {
+                              setState(() {
+                                selectedSchoolValue = value as String;
+                                var log = Logger();
+                                log.e("ชื่อโรงเรียน : "+selectedSchoolValue!);
+
+                              });
+                            },
+                            buttonHeight: 50,
+                            buttonWidth: 320,
+                            itemHeight: 40,
+                            itemPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(25, 0, 25, 0),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment : CrossAxisAlignment.start,
+                              children: [
+                                const Text('วันที่เริ่มให้บริการ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                                const SizedBox(height: 8),
+                                ButtonWidget(
+                                  onClicked: () => pickDateRange(context),
+                                  text: getFrom(),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.arrow_forward, color: Colors.black),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment : CrossAxisAlignment.start,
+                              children: [
+                                const Text('วันที่สิ้นสุดให้บริการ',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                                const SizedBox(height: 8),
+                                ButtonWidget(
+                                  onClicked: () => pickDateRange(context),
+                                  text: getUntil(),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      width: 350,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1.0, color: const Color(
+                            0xFFC9C9C9)),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: Center(
+                        child: Text(ServiceTime == null ? "ยังไม่เลือกวันที่" : ServiceTime.toString()),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+
                     Padding(
                       padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                       child: ElevatedButton(
@@ -714,6 +666,16 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
 
     setState(() => time = newTime);
   }
+
+  String calEuclidean(){
+    //num sum = pow(double.parse(latitude!) - double.parse(latitude!), 2) + pow(double.parse(longitude!) - double.parse(longitude!), 2) ;
+    var result = sqrt(pow(double.parse(listRoutes![0].bus.driver.home_latitude) - double.parse(latitude!), 2) + pow(double.parse(listRoutes![0].bus.driver.home_longitude) - double.parse(longitude!), 2));
+    var log = Logger();
+    log.e(result.toString());
+    return result.toString();
+
+  }
+
   AlertDialogApp alertDialogApp =AlertDialogApp();
   ContractManager contractManager = ContractManager();
   Future doApplySchoolBus() async{
@@ -733,8 +695,9 @@ class _ApplySchoolBusState extends State<ApplySchoolBusPage> {
       }else{
         DateTime now = DateTime.now();
         List<String> indexChildren = selectedChildrenValue!.split(" : ");
+        List<String> indexSchool = selectedSchoolValue!.split(" : ");
         List<String> indexRoute = selectedRouteValue!.split(" : ");
-        Contract contract = Contract("",now,dateRange!.start,dateRange!.end, latitude!,longitude!,timetxt!,null,1,
+        Contract contract = Contract("",now,dateRange!.start,dateRange!.end, latitude!,longitude!,indexSchool[1].trim(),double.parse(calEuclidean()),null,1,
             listChildrens![int.parse(indexChildren[0])-1],listRoutesBySchoolName![int.parse(indexRoute[0])-1]);
         print(contract.toString());
         String result = await contractManager.doAddContract(contract);

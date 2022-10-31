@@ -6,6 +6,9 @@ import 'package:project_schoolbus/page/Parent/Contract/RequestCancelPage.dart';
 
 import '../../../importer.dart';
 import '../../../model/ContractModel.dart';
+import '../../LoginPage/Linenoti.dart';
+import '../../MainPage/mainDriver.dart';
+import 'List_RequestCancel.dart';
 
 class RequestCancelDetailsPage extends StatefulWidget {
   const RequestCancelDetailsPage({Key? key}) : super(key: key);
@@ -45,7 +48,7 @@ class _RequestCancelDetailsState extends State<RequestCancelDetailsPage> {
     }
     return Scaffold(
       appBar: AppBar(
-          title: const Text("RequestCancelDetails Page"),
+          title: const Text("รายละเอียดคำขอยกเลิก"),
           toolbarHeight: 60,
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.only(
@@ -94,7 +97,7 @@ class _RequestCancelDetailsState extends State<RequestCancelDetailsPage> {
               ),
               const SizedBox(height: 10.0,),
               Text(
-                request!.contract.routes.school.school_name,
+                request!.contract.busStop.school.school_name,
                 style: const TextStyle(
                   fontSize: 20,
                 ),
@@ -213,23 +216,15 @@ class _RequestCancelDetailsState extends State<RequestCancelDetailsPage> {
                 ],
               ),
               const SizedBox(height: 20.0,),
-              Row(
-                children: [
-                  ElevatedButton(
-                      onPressed: (){
-                        saveContract();
-                        Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, duration : const Duration(milliseconds: 150),reverseDuration : const Duration(milliseconds: 150),
-                            child: const RequestCancelPage()));
-                      },
-                      child: Text('อนุมัติ')
-                  ),
-                  ElevatedButton(
-                      onPressed: (){},
-                      child: Text('ย้อนกลับ')
-                  ) ,
-                ],
-              ),
-
+              Align(
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                    onPressed: (){
+                      doApprove(request!.contract.contract_ID,request!.contract.busStop.bus.driver.firstname+" "+request!.contract.busStop.bus.driver.lastname);
+                    },
+                    child: Text('อนุมัติ')
+                ),
+              )
             ],
           ),
         ),
@@ -246,6 +241,36 @@ class _RequestCancelDetailsState extends State<RequestCancelDetailsPage> {
     DateDuration duration;
     duration = AgeCalculator.age(purchaseDate);
     return "อายุ : "+duration.years.toString()+" ปี";
+  }
+
+  late final Linenoti? linenoti = new Linenoti() ;
+  void doApprove(String contract_ID,String name) async{
+    String result = await manager.approveRequestCancel(contract_ID);
+    if(result != "0") {
+      linenoti!.send(message: name+' ได้ตอบรับคำร้องขอการยกเลิกของคุณแล้ว');
+
+      AnimatedSnackBar.rectangle(
+          'สำเร็จ',
+          'คุณได้อนุมัติการร้องขอยกเลิกสำเร็จ',
+          type: AnimatedSnackBarType.success,
+          brightness: Brightness.light,
+          duration: const Duration(seconds: 5)
+      ).show(
+        context,
+      );
+      Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, duration : const Duration(milliseconds: 150),reverseDuration : const Duration(milliseconds: 150),
+          child: const MainPageDriver()));
+    }else{
+      AnimatedSnackBar.rectangle(
+          'เกิดข้อผิดพลาด',
+          'กรุณาลองใหม่อีกครั้ง',
+          type: AnimatedSnackBarType.error,
+          brightness: Brightness.light,
+          duration : const Duration(seconds: 5)
+      ).show(
+        context,
+      );
+    }
   }
 
 }

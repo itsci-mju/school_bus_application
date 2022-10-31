@@ -35,6 +35,10 @@ class _DriverPersonalState extends State<ProfileDriverPage> {
   final _ctrldriver_license = TextEditingController();
   final _ctrlstudent_bus_license = TextEditingController();
   final _ctrlimage_Bus = TextEditingController();
+  final _ctrlrRoute_mapURL = TextEditingController();
+
+  String? latitude = getSharedPreferences.getLatitude() ?? '';
+  String? longitude = getSharedPreferences.getLongitude() ?? '';
 
   UploadTask? task;
   File? file1;
@@ -906,9 +910,9 @@ class _DriverPersonalState extends State<ProfileDriverPage> {
         List<String> s2 = _ctrlbirthday.text.split("/");
         DateTime p = DateTime(int.parse(s2[0]), int.parse(s2[1]), int.parse(s2[2]));
         Driver driver = Driver(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-            _ctrlemail.text,_ctrlgroupline.text,_ctrladdress.text,_ctrlimageprofile.text,_ctrldriver_license.text,_ctrlstudent_bus_license.text
-            ,Login(_ctrlUsername.text,_ctrlPassword.text,"3"));
-        Bus bus = Bus(_ctrlnum_plate.text,_ctrlprovince.text,_ctrlbrand.text,p,int.parse(_ctrlseats_amount.text),"","",1,"",_ctrlimage_Bus.text,driver);
+            _ctrlemail.text,_ctrlgroupline.text,_ctrladdress.text,latitude!,longitude!,_ctrlimageprofile.text,_ctrldriver_license.text,_ctrlstudent_bus_license.text
+            ,Login(_ctrlUsername.text,_ctrlPassword.text,3));
+        Bus bus = Bus(_ctrlnum_plate.text,_ctrlprovince.text,_ctrlbrand.text,p,int.parse(_ctrlseats_amount.text),"","",_ctrlrRoute_mapURL.text,1,"",_ctrlimage_Bus.text,driver);
         String result = await manager.editProfileDriver(bus);
         var logger = Logger();
         await getSharedPreferences.init();

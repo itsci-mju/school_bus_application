@@ -1,14 +1,18 @@
+import 'dart:typed_data';
+
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:project_schoolbus/manager/DriverManager.dart';
 import 'package:project_schoolbus/model/ContractModel.dart';
 import 'package:project_schoolbus/page/Driver/HomePage/top_container.dart';
-
+import 'dart:ui' as ui;
 import '../../../importer.dart';
 import '../../manager/ContractManager.dart';
 import '../Driver/HomePage/light_colors.dart';
 import '../MainPage/mainChidren.dart';
 import 'addbarChildren.dart';
+
 
 class HomePageChidren extends StatefulWidget {
   const HomePageChidren({Key? key}) : super(key: key);
@@ -20,15 +24,26 @@ class HomePageChidren extends StatefulWidget {
 class _MainRegisterState extends State<HomePageChidren> {
   String profile = getSharedPreferences.getProfile() ?? '';
   ContractManager manager = ContractManager();
-  Contract? contract;
+  List<Contract>? contract;
   Children? c;
   bool isLoading = true;
 
+  LocationData? currentLocation;
+
   @override
   void initState() {
+    changeIcon();
     getProfile();
     getContractDetails();
+    getCurrentLocation();
     super.initState();
+  }
+
+  void getCurrentLocation(){
+    Location location = Location();
+    location.getLocation().then((location) => {
+      currentLocation = location
+    });
   }
 
   void getContractDetails() {
@@ -56,6 +71,26 @@ class _MainRegisterState extends State<HomePageChidren> {
           letterSpacing: 1.2),
     );
   }
+
+  void getPolyPoints() async{
+    PolylinePoints polylinePoints = PolylinePoints();
+  }
+
+
+
+  Uint8List? markerIcon;
+  Uint8List? ChildrenIcon;
+  void changeIcon() async{
+    ChildrenIcon = await getBytesFromAsset('images/children-location.png', 130);
+    markerIcon = await getBytesFromAsset('images/school-bus-icon-location.png', 150);
+  }
+  Future<Uint8List> getBytesFromAsset(String path, int width) async {
+    ByteData data = await rootBundle.load(path);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.FrameInfo fi = await codec.getNextFrame();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  }
+
   Completer<GoogleMapController> _controller = Completer();
   @override
   Widget build(BuildContext context) {
@@ -70,7 +105,7 @@ class _MainRegisterState extends State<HomePageChidren> {
           child: Column(
             children: [
               ChildrenAddbar(),
-              contract! != null ?
+               !contract!.isEmpty ?
                   Column(
                     children: [
                       Padding(
@@ -93,7 +128,7 @@ class _MainRegisterState extends State<HomePageChidren> {
                                 fit: BoxFit.cover,
                               ),
                               onTap: ()async {
-                                String url = contract!.routes.bus.driver.groupline;
+                                String url = contract![0].busStop.bus.driver.groupline;
                                 var urllaunchable = await canLaunch(url);
                                 if(urllaunchable){
                                   await launch(url);
@@ -111,7 +146,7 @@ class _MainRegisterState extends State<HomePageChidren> {
                         child: Row(
                           children: [
                             Text(
-                                contract!.routes.bus.driver.firstname,
+                                contract![0].busStop.bus.driver.firstname,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 25,
@@ -121,7 +156,7 @@ class _MainRegisterState extends State<HomePageChidren> {
                               width: 10.0,
                             ),
                             Text(
-                                contract!.routes.bus.driver.lastname,
+                                contract![0].busStop.bus.driver.lastname,
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 18,
@@ -135,7 +170,7 @@ class _MainRegisterState extends State<HomePageChidren> {
                         child: Row(
                           children: [
                             Text(
-                                CalAge(contract!.routes.bus.driver.birthday),
+                                CalAge(contract![0].busStop.bus.driver.birthday),
                                 textAlign: TextAlign.start,
                                 style: TextStyle(
                                     fontSize: 18,
@@ -149,7 +184,7 @@ class _MainRegisterState extends State<HomePageChidren> {
                                 style: DefaultTextStyle.of(context).style,
                                 children:  <TextSpan>[
                                   const TextSpan(text: "เบอร์โทร : ", style: TextStyle(fontWeight: FontWeight.bold,fontSize: 18)),
-                                  TextSpan(text: contract!.routes.bus.driver.phone, style: TextStyle(fontSize: 18))
+                                  TextSpan(text: contract![0].busStop.bus.driver.phone, style: TextStyle(fontSize: 18))
                                 ],
 
                               ),
@@ -200,11 +235,11 @@ class _MainRegisterState extends State<HomePageChidren> {
                             color: Colors.black,  // red as border color
                           ),
                         ),
-                        child: GoogleMap(
+                        child: currentLocation == null ? Center(child: Text("Loading"),) : GoogleMap(
                           myLocationEnabled: true,
                           mapType: MapType.normal,
                           initialCameraPosition: CameraPosition(
-                            target: LatLng(double.parse(contract!.routes.bus.bus_latitude), double.parse(contract!.routes.bus.bus_longitude)),
+                            target: LatLng(double.parse(contract![0].busStop.bus.bus_latitude), double.parse(contract![0].busStop.bus.bus_longitude)),
                             zoom: 16,
                           ),
                           onMapCreated: (GoogleMapController controller) {
@@ -213,17 +248,22 @@ class _MainRegisterState extends State<HomePageChidren> {
                           markers: {
                             Marker(
                                 markerId: MarkerId("1"),
-                                position:  LatLng(double.parse(contract!.routes.bus.bus_latitude), double.parse(contract!.routes.bus.bus_longitude)),
+                                position:  LatLng(double.parse(contract![0].busStop.bus.bus_latitude), double.parse(contract![0].busStop.bus.bus_longitude)),
+                                icon: BitmapDescriptor.fromBytes(markerIcon!),
                                 infoWindow: InfoWindow(title: "ที่อยู่ปัจจุบันคนขับรถ")),
+                            Marker(
+                                markerId: MarkerId("2"),
+                                position:  LatLng(currentLocation!.latitude!,currentLocation!.longitude!),
+                                icon: BitmapDescriptor.fromBytes(ChildrenIcon!),
+                                infoWindow: const InfoWindow(title: "ที่อยู่ปัจจุบันของเรา")),
                           },
-
                         ),
                       )
                     ],
                   ):const Align(
                 alignment: Alignment.center,
                 child: Text(
-                    "ไม่มีข้อมูลคนขับรถ กรูณาส่งคำขอ",
+                    "ไม่มีข้อมูลคนขับรถ กรุณาส่งคำขอ",
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         fontSize: 25,

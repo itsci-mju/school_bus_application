@@ -175,7 +175,7 @@ class _viewActivityState extends State<viewActivitypage> {
                                 InkWell(
                                   child: Container(
                                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: const Text('ดูแผนที่',
+                                      child: const Text('ดูตำแหน่ง',
                                           style: TextStyle(
                                             fontSize: 14,
                                           )
@@ -224,7 +224,7 @@ class _viewActivityState extends State<viewActivitypage> {
                                 InkWell(
                                   child: Container(
                                       padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                      child: const Text('ดูแผนที่',
+                                      child: const Text('ดูตำแหน่ง',
                                           style: TextStyle(
                                             fontSize: 14,
                                           )
@@ -260,7 +260,7 @@ class _viewActivityState extends State<viewActivitypage> {
                                        fontWeight: FontWeight.w600),
                                  ),
                                  Text(
-                                   listActivity![index].status_children,
+                                   listActivity![index].status_children.toString(),
                                    style: const TextStyle(
                                        fontSize: 14,
                                        fontWeight: FontWeight.w600),
