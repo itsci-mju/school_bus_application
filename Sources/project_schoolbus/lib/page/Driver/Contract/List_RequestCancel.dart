@@ -60,259 +60,264 @@ class _ListRequestCancelState extends State<ListRequestCancel> {
   }
 
   Widget buildListContract() {
-    return Column(
-      crossAxisAlignment : CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: const [
-            SizedBox(width: 5,),
-            Icon(
-              CupertinoIcons.list_bullet,
-              size: 30.0,
-            ),
-            SizedBox(width: 10,),
-            Text('รายการขอยกเลิกสัญญา :',
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w800),),
-          ],
-        ),
-        SizedBox(height: 5,),
-        Align(
-          alignment: Alignment.topCenter,
-          child: ListView.builder(
-            physics: const NeverScrollableScrollPhysics(),
-            shrinkWrap: true,
-            itemCount: listRequest!.length,
-            itemBuilder: (context, index) {
-              //ProjectModel project = projectSnap.data![index];
-              return SizedBox(
-                height: MediaQuery.of(context).size.height*0.35,
-                width:  MediaQuery.of(context).size.width*1,
-                child: InkWell(
-                  onTap: (){
-                    setRequestID(listRequest![index].request_ID);
-                    Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, duration : const Duration(milliseconds: 150),reverseDuration : const Duration(milliseconds: 150),
-                        child: const RequestCancelDetailsPage()));
-                  },
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
-                                child: Image.network(
-                                  listRequest![index].contract.children.image_profile,
-                                  width: 120.0,
-                                  height: 120.0,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+    return Align(
+      alignment: Alignment.topCenter,
+      child:  SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment : CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: const [
+                  SizedBox(width: 5,),
+                  Icon(
+                    CupertinoIcons.list_bullet,
+                    size: 30.0,
+                  ),
+                  SizedBox(width: 10,),
+                  Text('รายการขอยกเลิกสัญญา :',
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800),),
+                ],
+              ),
+              SizedBox(height: 5,),
+              Align(
+                alignment: Alignment.topCenter,
+                child: ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: listRequest!.length,
+                  itemBuilder: (context, index) {
+                    //ProjectModel project = projectSnap.data![index];
+                    return SizedBox(
+                      height: MediaQuery.of(context).size.height*0.35,
+                      width:  MediaQuery.of(context).size.width*1,
+                      child: InkWell(
+                        onTap: (){
+                          setRequestID(listRequest![index].request_ID);
+                          Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, duration : const Duration(milliseconds: 150),reverseDuration : const Duration(milliseconds: 150),
+                              child: const RequestCancelDetailsPage()));
+                        },
+                        child: Card(
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Wrap(
-                                      spacing: 40,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment : CrossAxisAlignment.start,
-                                          mainAxisAlignment : MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const Text(
-                                              'ชื่อ',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(height: 5.0,),
-                                            Text(
-                                              listRequest![index].contract.children.firstname,
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w800),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment : CrossAxisAlignment.start,
-                                          mainAxisAlignment : MainAxisAlignment.spaceAround,
-                                          children: [
-                                            const Text(
-                                              'นามสกุล',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(height: 5.0,),
-                                            Text(
-                                              listRequest![index].contract.children.lastname,
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w800),
-                                            ),
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment : CrossAxisAlignment.start,
-                                          mainAxisAlignment : MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            const Text(
-                                              'อายุ',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            const SizedBox(height: 6.0,),
-                                            Text(
-                                              CalAge(listRequest![index].contract.children.birthday),
-                                              style: const TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w800),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
+                                    Padding(
+                                      padding: const EdgeInsets.fromLTRB(8, 0, 0, 0),
+                                      child: Image.network(
+                                        listRequest![index].contract.children.image_profile,
+                                        width: 120.0,
+                                        height: 120.0,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                     const SizedBox(
-                                      height: 5,
+                                      width: 20,
                                     ),
-                                    Column(
-                                      crossAxisAlignment : CrossAxisAlignment.start,
-                                      mainAxisAlignment : MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        const Text(
-                                          'โรงเรียน',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        const SizedBox(height: 5.0,),
-                                        Text(
-                                          listRequest![index].contract.routes.school.school_name,
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Text(
-                                          'เหลือสัญญา : ',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                                        SizedBox(width: MediaQuery.of(context).size.width*0.02,),
-                                        Text(
-                                          CalExpire(listRequest![index].request_date,listRequest![index].contract.end_date),
-                                          style: const TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w800),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerRight,
-                                      child: Row(
-                                        mainAxisAlignment : MainAxisAlignment.end,
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                primary: Color(0xffa3d064)
-                                            ),
-                                            onPressed: (){
-                                              showDialog(context: context, builder: (context) => AlertDialog(
-                                                title: const Text("คุณต้องการอนุมัติสัญญานี้ ?"),
-                                                actions: [
-                                                  ElevatedButton(onPressed: () {
-                                                    doApprove(listRequest![index].contract.contract_ID,listRequest![index].contract.routes.bus.driver.firstname+" "+listRequest![index].contract.routes.bus.driver.lastname);
-                                                    refreshRequestCancel();
-                                                    Navigator.pop(context);
-
-                                                  }, child: const Text("ยืนยัน")),
-                                                  ElevatedButton(onPressed: (){
-                                                    Navigator.pop(context);
-                                                  }, child: const Text("ยกเลิก"))
+                                          Wrap(
+                                            spacing: 40,
+                                            children: [
+                                              Column(
+                                                crossAxisAlignment : CrossAxisAlignment.start,
+                                                mainAxisAlignment : MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  const Text(
+                                                    'ชื่อ',
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+                                                  const SizedBox(height: 5.0,),
+                                                  Text(
+                                                    listRequest![index].contract.children.firstname,
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w800),
+                                                  ),
                                                 ],
-                                              ));
-                                            },
-                                            child: const Padding(
-                                              padding: EdgeInsets.fromLTRB(18, 8, 18, 8),
-                                              child: Text(
-                                                'อนุมัติ',
-                                                style: TextStyle(
-                                                    color: Colors.white),
                                               ),
-                                            ),
-                                          ),
-                                          const SizedBox(width: 10.0,),
-                                          ElevatedButton(
-                                            style: ElevatedButton.styleFrom(
-                                                primary: Color(0xffed4145)
-                                            ),
-                                            onPressed: (){
-                                              showDialog(context: context, builder: (context) => AlertDialog(
-                                                title: const Text("คุณไม่อนุมัติสัญญานี้ ?"),
-                                                actions: [
-                                                  ElevatedButton(onPressed: () {
-                                                    setRequestID(listRequest![index].request_ID);
-                                                    Navigator.pop(context);
-
-                                                  }, child: const Text("ยืนยัน")),
-                                                  ElevatedButton(onPressed: (){
-                                                    Navigator.pop(context);
-                                                  }, child: const Text("ยกเลิก"))
+                                              Column(
+                                                crossAxisAlignment : CrossAxisAlignment.start,
+                                                mainAxisAlignment : MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  const Text(
+                                                    'นามสกุล',
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+                                                  const SizedBox(height: 5.0,),
+                                                  Text(
+                                                    listRequest![index].contract.children.lastname,
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w800),
+                                                  ),
                                                 ],
-                                              ));
-                                            },
-                                            child: const Padding(
-                                              padding: EdgeInsets.all(8.0),
-                                              child: Text(
-                                                'ไม่อนุมัติ',
-                                                style: TextStyle(
-                                                    color: Colors.white),
                                               ),
-                                            ),
+                                              Column(
+                                                crossAxisAlignment : CrossAxisAlignment.start,
+                                                mainAxisAlignment : MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  const Text(
+                                                    'อายุ',
+                                                    style: TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w500),
+                                                  ),
+                                                  const SizedBox(height: 6.0,),
+                                                  Text(
+                                                    CalAge(listRequest![index].contract.children.birthday),
+                                                    style: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight: FontWeight.w800),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
                                           ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Column(
+                                            crossAxisAlignment : CrossAxisAlignment.start,
+                                            mainAxisAlignment : MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              const Text(
+                                                'โรงเรียน',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              const SizedBox(height: 5.0,),
+                                              Text(
+                                                listRequest![index].contract.busStop.school.school_name,
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w800),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Row(
+                                            children: [
+                                              const Text(
+                                                'เหลือสัญญา : ',
+                                                style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              SizedBox(width: MediaQuery.of(context).size.width*0.02,),
+                                              Text(
+                                                CalExpire(listRequest![index].request_date,listRequest![index].contract.end_date),
+                                                style: const TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.w800),
+                                              ),
+                                            ],
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
+                                          Align(
+                                            alignment: Alignment.centerRight,
+                                            child: Row(
+                                              mainAxisAlignment : MainAxisAlignment.end,
+                                              children: [
+                                                ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      primary: Color(0xffa3d064)
+                                                  ),
+                                                  onPressed: (){
+                                                    showDialog(context: context, builder: (context) => AlertDialog(
+                                                      title: const Text("คุณต้องการอนุมัติสัญญานี้ ?"),
+                                                      actions: [
+                                                        ElevatedButton(onPressed: () {
+                                                          doApprove(listRequest![index].contract.contract_ID,listRequest![index].contract.busStop.bus.driver.firstname+" "+listRequest![index].contract.busStop.bus.driver.lastname);
+                                                          refreshRequestCancel();
+                                                          Navigator.pop(context);
+
+                                                        }, child: const Text("ยืนยัน")),
+                                                        ElevatedButton(onPressed: (){
+                                                          Navigator.pop(context);
+                                                        }, child: const Text("ยกเลิก"))
+                                                      ],
+                                                    ));
+                                                  },
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.fromLTRB(18, 8, 18, 8),
+                                                    child: Text(
+                                                      'อนุมัติ',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 10.0,),
+                                                ElevatedButton(
+                                                  style: ElevatedButton.styleFrom(
+                                                      primary: Color(0xffed4145)
+                                                  ),
+                                                  onPressed: (){
+                                                    showDialog(context: context, builder: (context) => AlertDialog(
+                                                      title: const Text("คุณไม่อนุมัติสัญญานี้ ?"),
+                                                      actions: [
+                                                        ElevatedButton(onPressed: () {
+                                                          setRequestID(listRequest![index].request_ID);
+                                                          Navigator.pop(context);
+
+                                                        }, child: const Text("ยืนยัน")),
+                                                        ElevatedButton(onPressed: (){
+                                                          Navigator.pop(context);
+                                                        }, child: const Text("ยกเลิก"))
+                                                      ],
+                                                    ));
+                                                  },
+                                                  child: const Padding(
+                                                    padding: EdgeInsets.all(8.0),
+                                                    child: Text(
+                                                      'ไม่อนุมัติ',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+
+                                          )
                                         ],
                                       ),
-
                                     )
                                   ],
-                                ),
-                              )
-                            ],
-                          )
-                        ],
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  },
                 ),
-              );
-            },
-          ),
-        ),
-      ],
-    );
-
+              ),
+            ],
+          )
+      ),
+    )
+     ;
   }
 
   void setRequestID(String request_ID) async{
@@ -345,6 +350,7 @@ class _ListRequestCancelState extends State<ListRequestCancel> {
   void doApprove(String contract_ID,String name) async{
     String result = await manager.approveRequestCancel(contract_ID);
     if(result != "0") {
+      refreshRequestCancel();
       linenoti!.send(message: name+' ได้ตอบรับคำร้องขอการยกเลิกของคุณแล้ว');
       AnimatedSnackBar.rectangle(
           'สำเร็จ',
@@ -367,4 +373,5 @@ class _ListRequestCancelState extends State<ListRequestCancel> {
       );
     }
   }
+
 }
