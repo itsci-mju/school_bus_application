@@ -29,6 +29,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
   final _ctrladdress = TextEditingController();
   final _ctrlimageprofile = TextEditingController();
   final _ckfilename = TextEditingController();
+
+  String? latitude = getSharedPreferences.getLatitude() ?? '';
+  String? longitude = getSharedPreferences.getLongitude() ?? '';
+
   bool isLoading = false;
   static const double height = 10;
 
@@ -80,10 +84,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                                 String pettern = r'^[\d\w]{8,16}$';
                                 RegExp usernameRex = RegExp(pettern);
                                 if (value == null || value.isEmpty) {
-                                   alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อผู้ใช้');
+                             //      alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อผู้ใช้');
                                    return 'กรุณากรอกชื่อผู้ใช้ให้ถูกต้อง';
                                 }else if(!usernameRex.hasMatch(value.toString())){
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อผู้ใช้ สามารถประกอบด้วยภาษาอังกฤษ และ ตัวเลข 8 หลัก ไม่เกิน 16 หลัก');
+                             //     alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อผู้ใช้ สามารถประกอบด้วยภาษาอังกฤษ และ ตัวเลข 8 หลัก ไม่เกิน 16 หลัก');
                                   return 'กรุณากรอกชื่อผู้ใช้ให้ถูกต้อง';
                                 }
                                 return null;
@@ -107,10 +111,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                               validator: (value) {
                                 RegExp PasswordRex = RegExp (r"[a-zA-Z0-9]{8,16}$");
                                 if (value == null || value.isEmpty) {
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสผ่าน');
+                              //    alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสผ่าน');
                                   return 'กรุณากรอกรหัสผ่าน';
                                 }else if(!PasswordRex.hasMatch(value.toString())){
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสผ่าน สามารถประกอบด้วยภาษาอังกฤษ และ ตัวเลข 8 หลัก ไม่เกิน 16 หลัก');
+                              //    alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสผ่าน สามารถประกอบด้วยภาษาอังกฤษ และ ตัวเลข 8 หลัก ไม่เกิน 16 หลัก');
                                   return 'กรุณากรอกรหัสผ่าน';
                                 }
                                 return null;
@@ -142,10 +146,11 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                           RegExp IDCardRex = RegExp (r"(\d{13})");
 
                           if (value == null || value.isEmpty) {
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสบัตรประชาชน');
-                            return 'กรุณากรอกรหัสบัตรประชาชน';
+                        //   alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสบัตรประชาชน');
+                            return 'กรุณากรอกรหัสบัตรประชาชน'
+                            ;
                           }else if(!IDCardRex.hasMatch(value.toString())){
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสประจำตัวประชาชน ด้วยตัวเลข 13 หลัก!');
+                        //    alertDialogApp.showAlertDialog(context, 'กรุณากรอกรหัสประจำตัวประชาชน ด้วยตัวเลข 13 หลัก!');
                             return 'กรุณากรอกรหัสบัตรประชาชน';
                           }
                           return null;
@@ -171,10 +176,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                                 RegExp fnameRex = RegExp (r"([a-zA-Zก-์]{2,30})");
 
                                 if (value == null || value.isEmpty) {
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อ');
+                              //    alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อ');
                                   return 'กรุณากรอกชื่อ';
                                 }else if(!fnameRex.hasMatch(value.toString())){
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อ เป็นภาษาไทยหรือภาษาอังกฤษ ตั้งแต่ 2 หลัก!');
+                             //     alertDialogApp.showAlertDialog(context, 'กรุณากรอกชื่อ เป็นภาษาไทยหรือภาษาอังกฤษ ตั้งแต่ 2 หลัก!');
                                   return 'กรุณากรอกชื่อ';
                                 }
                                 return null;
@@ -198,10 +203,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                               validator: (value) {
                                 RegExp lnameRex = RegExp (r"([a-zA-Zก-์]{2,30})");
                                 if (value == null || value.isEmpty) {
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกนามสกุล');
+                               //   alertDialogApp.showAlertDialog(context, 'กรุณากรอกนามสกุล');
                                   return 'กรุณากรอกนามสกุล';
                                 }else if(!lnameRex.hasMatch(value.toString())){
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกนามสกุล เป็นภาษาไทยหรือภาษาอังกฤษ ตั้งแต่ 2 หลัก!');
+                              //    alertDialogApp.showAlertDialog(context, 'กรุณากรอกนามสกุล เป็นภาษาไทยหรือภาษาอังกฤษ ตั้งแต่ 2 หลัก!');
                                   return 'กรุณากรอกนามสกุล';
                                 }
                                 return null;
@@ -228,7 +233,7 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                               controller: _ctrlbirthday,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกวันเกิด');
+                               //   alertDialogApp.showAlertDialog(context, 'กรุณากรอกวันเกิด');
                                   return 'กรุณากรอกวันเกิด';
                                 }
                                 return null;
@@ -274,10 +279,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                                 RegExp phoneRex = RegExp (r"(\d{10})");
 
                                 if (value == null || value.isEmpty) {
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกหมายเลขโทรศัพท์');
+                               //   alertDialogApp.showAlertDialog(context, 'กรุณากรอกหมายเลขโทรศัพท์');
                                   return 'กรุณากรอกหมายเลขโทรศัพท์';
                                 }else if(!phoneRex.hasMatch(value.toString())){
-                                  alertDialogApp.showAlertDialog(context, 'กรุณากรอกหมายเลขโทรศัพท์ ด้วยตัวเลข 13 หลัก!');
+                               //   alertDialogApp.showAlertDialog(context, 'กรุณากรอกหมายเลขโทรศัพท์ ด้วยตัวเลข 13 หลัก!');
                                   return 'กรุณากรอกหมายเลขโทรศัพท์ ด้วยตัวเลข 13 หลัก!';
                                 }
                                 return null;
@@ -303,10 +308,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                         validator: (value) {
                           RegExp mailRex = RegExp (r"^([a-z0-9]+(?:[._-][a-z0-9]+)*)@([a-z0-9]+(?:[.-][a-z0-9]+)*\.[a-z]{2,})$");
                           if (value == null || value.isEmpty) {
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอกอีเมล');
+                         //   alertDialogApp.showAlertDialog(context, 'กรุณากรอกอีเมล');
                             return 'กรุณากรอกอีเมล';
                           }else if(!mailRex.hasMatch(value.toString())){
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอกอีเมล ให้ถูกต้อง');
+                        //    alertDialogApp.showAlertDialog(context, 'กรุณากรอกอีเมล ให้ถูกต้อง');
                             return 'กรุณากรอกอีเมล ให้ถูกต้อง';
                           }
                           return null;
@@ -328,10 +333,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                         validator: (value) {
                           RegExp lineRex = RegExp (r"^[a-z\d\.\-\_]{2,30}$");
                           if (value == null || value.isEmpty) {
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอก LineID');
+                        //    alertDialogApp.showAlertDialog(context, 'กรุณากรอก LineID');
                           return 'กรุณากรอก LineID';
                           }else if(!lineRex.hasMatch(value.toString())){
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอก LineID ให้ถูกต้อง');
+                        //    alertDialogApp.showAlertDialog(context, 'กรุณากรอก LineID ให้ถูกต้อง');
                           return 'กรุณากรอก LineID ให้ถูกต้อง';
                           }
                           return null;
@@ -353,10 +358,10 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                         validator: (value) {
                           RegExp lineRex = RegExp (r"^[\w\W\d\.\-\_]{2,70}$");
                           if (value == null || value.isEmpty) {
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอกที่อยู่');
+                          //  alertDialogApp.showAlertDialog(context, 'กรุณากรอกที่อยู่');
                             return 'กรุณากรอกที่อยู่';
                           }else if(!lineRex.hasMatch(value.toString())){
-                            alertDialogApp.showAlertDialog(context, 'กรุณากรอกที่อยู่ ให้ถูกต้อง');
+                          //  alertDialogApp.showAlertDialog(context, 'กรุณากรอกที่อยู่ ให้ถูกต้อง');
                             return 'กรุณากรอกที่อยู่ ให้ถูกต้อง';
                           }
                           return null;
@@ -399,7 +404,6 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.fromLTRB(100, 15, 100, 15),
                         ),
-
                         child: isLoading ? Row(
                           children: const [
                             CircularProgressIndicator(color: Colors.white),
@@ -449,14 +453,15 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
         List<String> s = _ctrlbirthday.text.split("/");
         DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         Parent parent = Parent(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-            _ctrlemail.text,_ctrllineid.text,_ctrladdress.text,_ctrlimageprofile.text
-            ,Login(_ctrlUsername.text,_ctrlPassword.text,"1"));
+            _ctrlemail.text,_ctrllineid.text,_ctrladdress.text,latitude!,longitude!,_ctrlimageprofile.text
+            ,Login(_ctrlUsername.text,_ctrlPassword.text,1));
         String result = await manager.doRegisrer(parent);
         var logger = Logger();
         await getSharedPreferences.init();
         logger.e(result);
         if(result != "0")  {
-
+          getSharedPreferences.removeLongitude();
+          getSharedPreferences.removeLatitude();
           setState(() => isLoading = false);
           AnimatedSnackBar.rectangle(
               'สำเร็จ',
@@ -473,7 +478,7 @@ class _RegisterParentPageState extends State<RegisterParentPage> {
         }else{
           AnimatedSnackBar.rectangle(
               'เกิดข้อผิดพลาด',
-              'เกิดข้อผิดพลาดในการสมัครสมาชิก',
+              'ชื่อผู้ใช้ หรือ รหัสบัตรประชาชน ซ้ำ',
               type: AnimatedSnackBarType.error,
               brightness: Brightness.light,
               duration : const Duration(seconds: 5)
