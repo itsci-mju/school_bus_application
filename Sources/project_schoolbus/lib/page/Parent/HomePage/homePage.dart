@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:project_schoolbus/page/Parent/HomePage/toggleContract.dart';
-import 'package:project_schoolbus/page/Parent/Route/listRoute.dart';
-
 import '../../../importer.dart';
 import '../SearchSchoolBus/SearchPage.dart';
 class HomePage extends StatefulWidget {
@@ -26,7 +25,6 @@ class _HomePageState extends State<HomePage> {
     Map<String, dynamic> map = jsonDecode(profile);
     Parent p = Parent.fromJson(map);
   }
-
 
 
   @override

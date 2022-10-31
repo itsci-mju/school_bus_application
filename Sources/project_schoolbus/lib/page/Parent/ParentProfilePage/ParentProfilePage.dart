@@ -19,6 +19,9 @@ class _ParentProfilePageState extends State<ParentProfilePage> {
   String type = getSharedPreferences.getType() ?? '';
   Future<Parent>? futureprofile;
 
+  String? latitude = getSharedPreferences.getLatitude() ?? '';
+  String? longitude = getSharedPreferences.getLongitude() ?? '';
+
   final _formKey = GlobalKey<FormState>();
   late final _ctrlUsername = TextEditingController();
   late final _ctrlPassword = TextEditingController();
@@ -467,13 +470,15 @@ class _ParentProfilePageState extends State<ParentProfilePage> {
         List<String> s = _ctrlbirthday.text.split("/");
         DateTime b = DateTime(int.parse(s[0]), int.parse(s[1]), int.parse(s[2]));
         Parent parent = Parent(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-            _ctrlemail.text,_ctrllineid.text,_ctrladdress.text,_ctrlimageprofile.text
-            ,Login(_ctrlUsername.text,_ctrlPassword.text,"1"));
+            _ctrlemail.text,_ctrllineid.text,_ctrladdress.text,latitude!,longitude!,_ctrlimageprofile.text
+            ,Login(_ctrlUsername.text,_ctrlPassword.text,1));
         String result = await manager.editProfile(parent);
         var logger = Logger();
         await getSharedPreferences.init();
         logger.e(result);
         if(result != "0") {
+          getSharedPreferences.removeLongitude();
+          getSharedPreferences.removeLatitude();
           AnimatedSnackBar.rectangle(
               'สำเร็จ',
               'แก้ไขข้อมูลสำเร็จ',
