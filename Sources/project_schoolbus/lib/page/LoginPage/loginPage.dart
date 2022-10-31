@@ -340,7 +340,7 @@ class _LoginPageState extends State<LoginPage> {
                     builder: (context) => const MainPageDriver()));
           }
         }else{
-          isLoading = false;
+          setState(() => isLoading = false);
           AnimatedSnackBar.rectangle(
             'เกิดข้อผิดพลาด',
             'ชื่อผู้ใช้หรือรหัสผิด',
@@ -350,7 +350,7 @@ class _LoginPageState extends State<LoginPage> {
           ).show(
             context,
           );
-          isLoading = false;
+
 
         }
       }catch(error){

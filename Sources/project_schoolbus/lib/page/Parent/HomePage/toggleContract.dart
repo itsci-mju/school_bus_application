@@ -54,7 +54,7 @@ class _ToggleContractState extends State<ToggleContract> with SingleTickerProvid
                               AssetImage("images/application_icon.png"),
                             ),
                             SizedBox(width: 10,),
-                            Text('อุมัติแล้ว',style: TextStyle(
+                            Text('อนุมัติแล้ว',style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800),)
                           ],
@@ -68,7 +68,7 @@ class _ToggleContractState extends State<ToggleContract> with SingleTickerProvid
                               AssetImage("images/application_icon.png"),
                             ),
                             SizedBox(width: 10,),
-                            Text('ไม่อุมัติ',style: TextStyle(
+                            Text('รออนุมัติ',style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w800),)
                           ],

@@ -24,7 +24,6 @@ class _Driver_ChildrenState extends State<Driver_Children>  {
       ),
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height*1,
           color: LightColors.kLightYellow,
           alignment: Alignment.topCenter,
           padding: const EdgeInsets.all(8.0),

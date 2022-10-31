@@ -1,5 +1,8 @@
 
+import 'package:page_transition/page_transition.dart';
 import 'package:project_schoolbus/importer.dart';
+
+import '../SearchSchoolBus/List_SearchSchoolBus.dart';
 
 class Children_list extends StatefulWidget {
   const Children_list({Key? key}) : super(key: key);
@@ -32,8 +35,9 @@ class _Children_listState extends State<Children_list> {
           isLoading = false;
         }),
     });
-
   }
+
+
 
   @override
   Widget build(BuildContext context)  {
@@ -88,11 +92,22 @@ class _Children_listState extends State<Children_list> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      listchildren![index].firstname +" "+listchildren![index].lastname,
-                                      style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          listchildren![index].firstname +" "+listchildren![index].lastname,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        InkWell(
+                                          child: Icon(Icons.search),
+                                          onTap: ()  {
+                                            Navigator.push(context, PageTransition(type: PageTransitionType.rightToLeft, duration : const Duration(milliseconds: 150),reverseDuration : const Duration(milliseconds: 150),
+                                                child: List_SearchSchoolBus(title: listchildren![index].school_name,)));
+                                          },
+                                        ),
+                                      ],
                                     ),
                                     const SizedBox(
                                       height: 5,
