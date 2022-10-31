@@ -3,13 +3,13 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import '../ResponseModel.dart';
 import '../String.dart';
-import '../model/RouteModel.dart';
+import '../model/BusStopModel.dart';
 
 
 class RouteManager{
   RouteManager();
 
-  Future<String> doAddRoute(Routes routes) async {
+  Future<String> doAddRoute(BusStop routes) async {
     final response = await http.post(
       Uri.parse(Strings.url+Strings.add_Route),
       headers: <String, String>{
@@ -35,7 +35,7 @@ class RouteManager{
     }
   }
 
-  Future<List<Routes>> listRoute() async {
+  Future<List<BusStop>> listRoute() async {
     final response = await http
         .post(Uri.parse(Strings.url+Strings.list_Route));
 
@@ -44,7 +44,7 @@ class RouteManager{
       // then parse the JSON.
       ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
       var logger = Logger();
-      List<Routes> listRoute = (responseModel.result as List).map((item) => Routes.fromJson(item)).toList();
+      List<BusStop> listRoute = (responseModel.result as List).map((item) => BusStop.fromJson(item)).toList();
       logger.e(listRoute.toString());
 
       return listRoute;
@@ -53,7 +53,7 @@ class RouteManager{
     }
   }
 
-  Future<List<Routes>> getListSearch(String school_name) async {
+  Future<List<BusStop>> getListSearch(String school_name, String latitude,String longitude) async {
     final response = await http.post(
       Uri.parse(Strings.url+Strings.getListSearch),
       headers: <String, String>{
@@ -61,6 +61,8 @@ class RouteManager{
       },
       body: jsonEncode(<String, String>{
         'school_name': school_name,
+        'latitude': latitude,
+        'longitude': longitude,
       }),
     );
 
@@ -69,7 +71,7 @@ class RouteManager{
       // then parse the JSON.
       ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
       var logger = Logger();
-      List<Routes> listRoute = (responseModel.result as List).map((item) => Routes.fromJson(item)).toList();
+      List<BusStop> listRoute = (responseModel.result as List).map((item) => BusStop.fromJson(item)).toList();
       logger.e(listRoute.toString());
 
       return listRoute;
@@ -78,7 +80,7 @@ class RouteManager{
     }
   }
 
-  Future<List<Routes>> getSchoolBusDetails(String num_plate) async {
+  Future<List<BusStop>> getSchoolBusDetails(String num_plate) async {
     final response = await http
         .post(Uri.parse(Strings.url+Strings.getschoolbusdetails),
       headers: <String, String>{
@@ -93,7 +95,7 @@ class RouteManager{
       // If the server did return a 200 OK response,
       // then parse the JSON.
       ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
-      List<Routes> listRoute = (responseModel.result as List).map((item) => Routes.fromJson(item)).toList();
+      List<BusStop> listRoute = (responseModel.result as List).map((item) => BusStop.fromJson(item)).toList();
       var logger = Logger();
       logger.e("DetailsBus : "+listRoute.toString());
 
@@ -103,15 +105,14 @@ class RouteManager{
     }
   }
 
-  Future<List<Routes>> getRouteBySchoolID(String num_plate,String school_ID) async {
+  Future<List<BusStop>> getSchoolByNum_plate(String num_plate) async {
     final response = await http
-        .post(Uri.parse(Strings.url+Strings.getRouteBySchoolID),
+        .post(Uri.parse(Strings.url+Strings.getSchoolByNum_plate),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'num_plate': num_plate,
-        'school_ID': school_ID,
       }),
     );
 
@@ -119,7 +120,7 @@ class RouteManager{
       // If the server did return a 200 OK response,
       // then parse the JSON.
       ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
-      List<Routes> listRoute = (responseModel.result as List).map((item) => Routes.fromJson(item)).toList();
+      List<BusStop> listRoute = (responseModel.result as List).map((item) => BusStop.fromJson(item)).toList();
       var logger = Logger();
       logger.e("DetailsBus : "+listRoute.toString());
 
@@ -129,7 +130,7 @@ class RouteManager{
     }
   }
 
-  Future<List<Routes>> getRouteBySchoolName(String num_plate,String school_name) async {
+  Future<List<BusStop>> getRouteBySchoolName(String num_plate,String school_name) async {
     final response = await http
         .post(Uri.parse(Strings.url+Strings.getRouteBySchoolName),
       headers: <String, String>{
@@ -145,7 +146,7 @@ class RouteManager{
       // If the server did return a 200 OK response,
       // then parse the JSON.
       ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
-      List<Routes> listRoute = (responseModel.result as List).map((item) => Routes.fromJson(item)).toList();
+      List<BusStop> listRoute = (responseModel.result as List).map((item) => BusStop.fromJson(item)).toList();
       var logger = Logger();
       logger.e("DetailsBus : "+listRoute.toString());
 

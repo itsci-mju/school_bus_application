@@ -138,7 +138,7 @@ class ContractManager{
     }
   }
 
-  Future<Contract> getContractDetailsbychildren(String childrenid) async {
+  Future<List<Contract>> getContractDetailsbychildren(String childrenid) async {
     final response = await http.post(
       Uri.parse(Strings.url+Strings.getContractDetailsbychildrenid),
       headers: <String, String>{
@@ -153,11 +153,11 @@ class ContractManager{
       // then parse the JSON.
       ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
       var logger = Logger();
-      Map<String, dynamic> childrenMap = responseModel.toMap();
-      Contract contract = Contract.fromJson(childrenMap['result']);
-      logger.e(contract.toString());
+      logger.e(responseModel.toString());
+      List<Contract> listContracts = (responseModel.result as List).map((item) => Contract.fromJson(item)).toList();
+      logger.e(listContracts.toString());
 
-      return contract;
+      return listContracts;
     } else {
       throw Exception('Failed to getContractDetails');
     }
@@ -428,6 +428,32 @@ class ContractManager{
       return listContracts;
     } else {
       throw Exception('Failed to getListChildren');
+    }
+  }
+  Future<String> driver_UnApproveApplication(String contract_ID,String approve_date) async {
+    final response = await http.post(
+      Uri.parse(Strings.url+Strings.driver_UnApproveApplication),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'contract_ID': contract_ID,
+        'approve_date': approve_date,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      ResponseModel responseModel = ResponseModel.fromJson(jsonDecode(response.body));
+      var logger = Logger();
+      logger.e(responseModel.toString());
+      String result = responseModel.result.toString();
+      logger.e(result.toString());
+
+      return result;
+    } else {
+      throw Exception('Failed to UnApproveApplication');
     }
   }
 
