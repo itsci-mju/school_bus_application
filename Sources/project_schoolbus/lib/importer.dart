@@ -37,7 +37,7 @@ export 'package:project_schoolbus/model/LoginModel.dart';
 export 'package:project_schoolbus/model/ParentModel.dart';
 export 'package:project_schoolbus/model/BusModel.dart';
 export 'package:project_schoolbus/model/SchoolModel.dart';
-export 'package:project_schoolbus/model/RouteModel.dart';
+export 'package:project_schoolbus/model/BusStopModel.dart';
 
 export 'package:project_schoolbus/ResponseModel.dart';
 

@@ -1,6 +1,7 @@
 
 class Strings {
- static const String url = "http://172.16.1.222:8080/Project_Schoolbus";
+ //static const String url = "http://192.168.1.107:8080/Project_Schoolbus";
+ static const String url = "http://172.16.1.10:8080/Project_Schoolbus";
  // static const String url = "http://10.1.2.183:8080/Project_Schoolbus";
  // static const String url = "http://192.168.85.38:8080/Project_Schoolbus";
 
@@ -47,7 +48,7 @@ class Strings {
   static const String driver_getRequestCancel =  "/requestCancel/getDetails";
   static const String driver_ApproveRequestCancel =  "/requestCancel/approved";
   static const String driver_ApproveApplication =  "/application/approved";
-
+ static const String driver_UnApproveApplication =  "/application/Unapproved";
   static const String Busupdatelocation =  "/bus/updatelocation";
   static const String driver_listChildren =  "/driver/listChildren";
   static const String driver_listChildren1 =  "/driver/listChildren1";
@@ -61,7 +62,7 @@ class Strings {
   static const String add_Route = "/route/add";
   static const String list_Route = "/route/list";
   static const String getschoolbusdetails = "/schoolbus/SchoolBusDetails";
-  static const String getRouteBySchoolID = "/schoolbus/routebySchool";
+  static const String getSchoolByNum_plate = "/schoolbus/routebySchool";
   static const String getRouteBySchoolName = "/schoolbus/routebySchoolName";
   static const String requestContract = "/contract/add";
 
