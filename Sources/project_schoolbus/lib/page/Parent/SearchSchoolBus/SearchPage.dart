@@ -58,8 +58,8 @@ class SearchPageState extends State<SearchPage> {
       appBar: AppBar(
         // The search area here
           backgroundColor: Colors.amber,
-          leading: new IconButton(
-            icon: new Icon(Icons.arrow_back, color: Colors.black),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
               onPressed: () {
                       if(Firstname != ""){
                         Navigator.of(context).push(

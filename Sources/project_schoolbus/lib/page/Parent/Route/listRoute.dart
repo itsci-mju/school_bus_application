@@ -9,7 +9,7 @@ class Route_list extends StatefulWidget {
 
 class _Route_listState extends State<Route_list> {
   RouteManager manager = RouteManager();
-  List<Routes>? listRoutes;
+  List<BusStop>? listRoutes;
   bool isLoading = true;
 
   @override

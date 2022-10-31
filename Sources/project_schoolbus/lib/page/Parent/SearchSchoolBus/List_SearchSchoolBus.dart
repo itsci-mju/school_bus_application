@@ -1,7 +1,7 @@
 
 import 'package:flutter/cupertino.dart';
 
-import '../../../importer.dart';
+import 'package:project_schoolbus/importer.dart';
 
 class List_SearchSchoolBus extends StatefulWidget {
   const List_SearchSchoolBus({Key? key,required this.title}) : super(key: key);
@@ -15,8 +15,11 @@ class List_SearchSchoolBus extends StatefulWidget {
 class _List_SearchSchoolBusState extends State<List_SearchSchoolBus>  {
 
   RouteManager manager = RouteManager();
-  List<Routes>? listRoutes;
+  List<BusStop>? listRoutes;
   bool isLoading = true;
+
+  String profile = getSharedPreferences.getProfile() ?? '';
+  Parent? p;
 
   @override
   void initState() {
@@ -28,15 +31,20 @@ class _List_SearchSchoolBusState extends State<List_SearchSchoolBus>  {
     setState(() {
       isLoading = true;
     });
-    manager.getListSearch(widget.title).then((value) async => {
+    var log = Logger();
+    Map<String, dynamic> map = jsonDecode(profile);
+    p = Parent.fromJson(map);
+    log.e(p.toString());
+    manager.getListSearch(widget.title,p!.home_latitude,p!.home_longitude).then((value) async => {
       setState(() {
         listRoutes = value;
         isLoading = false;
 
       }),
     });
-
   }
+
+
 
   @override
   Widget build(BuildContext context)  {
@@ -221,14 +229,10 @@ class _List_SearchSchoolBusState extends State<List_SearchSchoolBus>  {
         ),
       ),
     );
-
-
   }
 
   Future setNum_plate(String num_plate) async{
     await getSharedPreferences.setNum_plate(num_plate);
-
-
   }
 
 }
