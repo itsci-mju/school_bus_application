@@ -11,7 +11,7 @@ class Activity{
   late String get_off_time  ;
   late String reason ;
   late int time_of_date ;
-  late String status_children ;
+  late int status_children ;
   late Contract contract ;
 
   Activity(

@@ -2,7 +2,7 @@
 class Login{
   late String username;
   late String password;
-  late String type;
+  late int type;
 
   Login(this.username, this.password, this.type);
 

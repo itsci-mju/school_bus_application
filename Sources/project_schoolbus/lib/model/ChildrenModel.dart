@@ -10,6 +10,7 @@ class Children {
   late String phone;
   late String email;
   late String lineID;
+  late String school_name;
   late String image_profile;
   late Parent parent;
   late Login login;
@@ -22,6 +23,7 @@ class Children {
       this.phone,
       this.email,
       this.lineID,
+      this.school_name,
       this.image_profile,
       this.parent,
       this.login);
@@ -34,6 +36,7 @@ class Children {
         phone = json['phone'],
         email = json['email'],
         lineID = json['lineID'],
+        school_name = json['school_name'],
         image_profile = json['image_profile'],
         parent = Parent.fromJson(json['parent']),
         login = Login.fromJson(json['login']);
@@ -52,6 +55,7 @@ class Children {
       'phone': phone,
       'email': email,
       'lineID': lineID,
+      'school_name': school_name,
       'image_profile': image_profile,
       'parent': parent.toMap(),
       'login': login.toMap(),
@@ -60,6 +64,6 @@ class Children {
 
   @override
   String toString() {
-    return 'Children{IDCard: $IDCard, firstname: $firstname, lastname: $lastname, birthday: $birthday, phone: $phone, email: $email, lineID: $lineID, image_profile: $image_profile, parent: $parent, login: $login}';
+    return 'Children{IDCard: $IDCard, firstname: $firstname, lastname: $lastname, birthday: $birthday, phone: $phone, email: $email, lineID: $lineID, school_name: $school_name, image_profile: $image_profile, parent: $parent, login: $login}';
   }
 }

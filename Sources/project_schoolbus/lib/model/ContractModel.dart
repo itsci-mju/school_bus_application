@@ -1,6 +1,8 @@
 
+import 'dart:ffi';
+
 import 'ChildrenModel.dart';
-import 'RouteModel.dart';
+import 'BusStopModel.dart';
 
 class Contract {
   late String contract_ID;
@@ -9,11 +11,12 @@ class Contract {
   late DateTime end_date;
   late String pick_up_latitude;
   late String pick_up_longitude;
-  late String pick_up_time;
+  late String school_name;
+  late double euclidean;
   DateTime? approve_date;
   late int status;
   late Children children;
-  late Routes routes;
+  late BusStop busStop;
 
   Contract(
       this.contract_ID,
@@ -22,24 +25,27 @@ class Contract {
       this.end_date,
       this.pick_up_latitude,
       this.pick_up_longitude,
-      this.pick_up_time,
+      this.school_name,
+      this.euclidean,
       this.approve_date,
       this.status,
       this.children,
-      this.routes);
+      this.busStop);
+
 
   Contract.fromJson(Map<String, dynamic> json)
-      : contract_ID = json['contract_ID'],
-        contract_date = DateTime.parse(json['contract_date']),
-        start_date = DateTime.parse(json['start_date']),
-        end_date = DateTime.parse(json['end_date']),
-        pick_up_latitude = json['pick_up_latitude'],
-        pick_up_longitude = json['pick_up_longitude'],
-        pick_up_time = json['pick_up_time'],
+      : contract_ID = json['contract_ID']  ?? "",
+        contract_date = DateTime.parse(json['contract_date']) ,
+        start_date = DateTime.parse(json['start_date']) ,
+        end_date = DateTime.parse(json['end_date']) ,
+        pick_up_latitude = json['pick_up_latitude'] ?? "",
+        pick_up_longitude = json['pick_up_longitude']?? "",
+        school_name = json['school_name']?? "",
+        euclidean = json['euclidean']?? 0.0,
         approve_date = json['approve_date'] == null ? null : DateTime.parse(json['approve_date']),
-        status = json['status'],
-        children = Children.fromJson(json['children']),
-        routes = Routes.fromJson(json['route']);
+        status = json['status'] ?? 0,
+        children =  Children.fromJson(json['children']) ,
+        busStop = BusStop.fromJson(json['busStop']);
 
   Map<String, dynamic> toMap() {
     // JSON
@@ -54,16 +60,17 @@ class Contract {
       'end_date': end_date.toString(),
       'pick_up_latitude': pick_up_latitude,
       'pick_up_longitude': pick_up_longitude,
-      'pick_up_time': pick_up_time,
+      'school_name': school_name,
+      'euclidean': euclidean,
       'approve_date': approve_date.toString(),
       'status': status,
       'children': children.toMap(),
-      'route': routes.toMap(),
+      'busStop': busStop.toMap(),
     };
   }
 
   @override
   String toString() {
-    return 'Contract{contract_ID: $contract_ID, contract_date: $contract_date, start_date: $start_date, end_date: $end_date, pick_up_latitude: $pick_up_latitude, pick_up_longitude: $pick_up_longitude, pick_up_time: $pick_up_time, approve_date: $approve_date, status: $status, children: $children, routes: $routes}';
+    return 'Contract{contract_ID: $contract_ID, contract_date: $contract_date, start_date: $start_date, end_date: $end_date, pick_up_latitude: $pick_up_latitude, pick_up_longitude: $pick_up_longitude, school_name: $school_name, euclidean: $euclidean, approve_date: $approve_date, status: $status, children: $children, busStop: $busStop}';
   }
 }

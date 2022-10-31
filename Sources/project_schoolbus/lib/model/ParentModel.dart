@@ -9,6 +9,8 @@ class Parent {
   late String email;
   late String lineID;
   late String address;
+  late String home_latitude;
+  late String home_longitude;
   late String image_profile;
   late Login login;
 
@@ -21,6 +23,8 @@ class Parent {
       this.email,
       this.lineID,
       this.address,
+      this.home_latitude,
+      this.home_longitude,
       this.image_profile,
       this.login);
 
@@ -33,6 +37,8 @@ class Parent {
         email = json['email'],
         lineID = json['lineID'],
         address = json['address'],
+        home_latitude = json['home_latitude']??'',
+        home_longitude = json['home_longitude']??'',
         image_profile = json['image_profile'],
         login = Login.fromJson(json['login']);
 
@@ -52,6 +58,8 @@ class Parent {
       'email': email,
       'lineID': lineID,
       'address': address,
+      'home_latitude': home_latitude,
+      'home_longitude': home_longitude,
       'image_profile': image_profile,
       'login': login.toMap(),
     };
@@ -59,6 +67,6 @@ class Parent {
 
   @override
   String toString() {
-    return 'Parent{IDCard: $IDCard, firstname: $firstname, lastname: $lastname, birthday: $birthday, phone: $phone, email: $email, lineID: $lineID, address: $address, image_profile: $image_profile, login: $login}';
+    return 'Parent{IDCard: $IDCard, firstname: $firstname, lastname: $lastname, birthday: $birthday, phone: $phone, email: $email, lineID: $lineID, address: $address, home_latitude: $home_latitude, home_longitude: $home_longitude, image_profile: $image_profile, login: $login}';
   }
 }

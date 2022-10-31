@@ -9,13 +9,11 @@ class Bus{
   late int seats_amount;
   late String bus_latitude;
   late String bus_longitude;
+  late String route_mapURL;
   late int status_bus;
   late String reason;
   late String image_Bus;
   late Driver driver;
-
-
-
 
   Bus(
       this.num_plate,
@@ -25,6 +23,7 @@ class Bus{
       this.seats_amount,
       this.bus_latitude,
       this.bus_longitude,
+      this.route_mapURL,
       this.status_bus,
       this.reason,
       this.image_Bus,
@@ -38,6 +37,7 @@ class Bus{
         seats_amount = json['seats_amount'],
         bus_latitude = json['bus_latitude'],
         bus_longitude = json['bus_longitude'],
+        route_mapURL = json['route_mapURL']??"",
         status_bus = json['status_bus'],
         reason = json['reason'],
         image_Bus = json['image_Bus'],
@@ -57,6 +57,7 @@ class Bus{
       'seats_amount': seats_amount,
       'bus_latitude': bus_latitude,
       'bus_longitude': bus_longitude,
+      'route_mapURL': route_mapURL,
       'status_bus': status_bus,
       'reason': reason,
       'image_Bus': image_Bus,
@@ -66,7 +67,6 @@ class Bus{
 
   @override
   String toString() {
-    return 'Bus{num_plate: $num_plate, province: $province, brand: $brand, purchase_date: $purchase_date, seats_amount: $seats_amount, bus_latitude: $bus_latitude, bus_longitude: $bus_longitude, status_bus: $status_bus, image_Bus: $image_Bus, driver: $driver}';
+    return 'Bus{num_plate: $num_plate, province: $province, brand: $brand, purchase_date: $purchase_date, seats_amount: $seats_amount, bus_latitude: $bus_latitude, bus_longitude: $bus_longitude, route_mapURL: $route_mapURL, status_bus: $status_bus, reason: $reason, image_Bus: $image_Bus, driver: $driver}';
   }
-  
 }

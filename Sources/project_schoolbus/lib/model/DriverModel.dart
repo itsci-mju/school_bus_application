@@ -10,6 +10,8 @@ class Driver{
   late String email;
   late String groupline;
   late String address;
+  late String home_latitude;
+  late String home_longitude;
   late String image_profile;
   late String driver_license;
   late String student_bus_license;
@@ -24,6 +26,8 @@ class Driver{
       this.email,
       this.groupline,
       this.address,
+      this.home_latitude,
+      this.home_longitude,
       this.image_profile,
       this.driver_license,
       this.student_bus_license,
@@ -41,11 +45,13 @@ class Driver{
       : IDCard = json['IDCard'],
         firstname = json['firstname'],
         lastname = json['lastname'],
-        birthday =  DateTime.parse(json['birthday']),
+        birthday =   DateTime.parse(json['birthday']),
         phone = json['phone'],
         email = json['email'],
         groupline = json['groupline'],
         address = json['address'],
+        home_latitude = json['home_latitude']??"",
+        home_longitude = json['home_longitude']??"",
         image_profile = json['image_profile'],
         driver_license = json['driver_license'],
         student_bus_license = json['student_bus_license'],
@@ -66,6 +72,8 @@ class Driver{
       'email': email,
       'groupline': groupline,
       'address': address,
+      'home_latitude': home_latitude,
+      'home_longitude': home_longitude,
       'image_profile': image_profile,
       'driver_license': driver_license,
       'student_bus_license': student_bus_license,
