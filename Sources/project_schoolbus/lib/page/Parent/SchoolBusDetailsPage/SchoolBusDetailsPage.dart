@@ -1,5 +1,6 @@
 
 
+import 'package:intl/intl.dart';
 import 'package:project_schoolbus/page/Driver/Profile/ImageDialog.dart';
 
 import '../../../importer.dart';
@@ -19,17 +20,18 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
   RouteManager manager = RouteManager();
   String num_plate = getSharedPreferences.getNum_plate() ?? '';
   String Firstname = getSharedPreferences.getFirstname() ?? '';
-  List<Routes>? listRoutes ;
-  List<Routes>? listRoutesBySchool ;
+  List<BusStop>? listRoutes ;
+  List<BusStop>? listRoutesBySchool ;
   bool isLoading = true;
   List? l;
+  final f = new DateFormat('HH:mm');
+
   @override
   void initState() {
     getSchoolBusDetails();
     getCalDetails();
     super.initState();
   }
-
 
   void getSchoolBusDetails() async{
     setState(() {
@@ -38,10 +40,11 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
     await manager.getSchoolBusDetails(num_plate).then((value) => {
       listRoutes = value,
       setState(() {
+        var log = Logger();
+        log.e("dsadsaddddddddddddddddddsadasdasd "+listRoutes.toString());
         isLoading = false;
       })
     });
-
   }
 
   void getCalDetails() async{
@@ -56,17 +59,7 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
     });
   }
 
-  void getRouteBySchoolID(String num_plate,String school_ID) async{
-    setState(() {
-      isLoading = true;
-    });
-    manager.getRouteBySchoolID(num_plate,school_ID).then((value) => {
-      listRoutesBySchool = value,
-      setState(() {
-        isLoading = false;
-      })
-    });
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -291,6 +284,7 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                             const SizedBox(
                                               height: 10,
                                             ),
+                                            Firstname != ''?
                                             Column(
                                               mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
@@ -368,7 +362,7 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                                   ),
                                                 )
                                               ],
-                                            ),
+                                            ): Container(),
                                             const SizedBox(
                                               height: 10,
                                             ),
@@ -381,6 +375,48 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                                       0xFFC9C9C9)),
                                                 ),
                                               ),
+                                            ),
+                                            const SizedBox(
+                                              height: 25,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                                              child: Row(
+                                                children: const [
+                                                  Icon(
+                                                    Icons.list,
+                                                    size: 30.0,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 10,
+                                                  ),
+                                                  Text(
+                                                    "เส้นทาง",
+                                                    style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight: FontWeight.w800),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 25,
+                                            ),
+                                            InkWell(
+                                              child: Text('ดูเส้นทางที่รับ',
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.w500),
+                                              ),
+                                              onTap: () async {
+                                                String url = listRoutes![0].bus.route_mapURL;
+                                                var urllaunchable = await canLaunch(url); //canLaunch is from url_launcher package
+                                                if(urllaunchable){
+                                                  await launch(url); //launch is from url_launcher package to launch URL
+                                                }else{
+                                                  print("URL can't be launched.");
+                                                }
+                                              },
                                             ),
                                             const SizedBox(
                                               height: 25,
@@ -435,20 +471,12 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                                             }
                                                           ),*/
                                                       InkWell(
-                                                        child: Text(listRoutes![index].route_details,
+                                                        child: Text('ถึงเวลาประมาณ : '+f.format(listRoutes![index].stop_time!)+' น.',
                                                           style: const TextStyle(
-                                                              fontSize: 18,
+                                                              fontSize: 16,
                                                               fontWeight: FontWeight.w500),
                                                         ),
-                                                        onTap: () async {
-                                                          String url = listRoutes![index].route_mapURL;
-                                                          var urllaunchable = await canLaunch(url); //canLaunch is from url_launcher package
-                                                          if(urllaunchable){
-                                                            await launch(url); //launch is from url_launcher package to launch URL
-                                                          }else{
-                                                            print("URL can't be launched.");
-                                                          }
-                                                        },
+
                                                       ),
 
                                                         ],
@@ -462,7 +490,7 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                             ),
                                             Firstname != ''
                                               ?listRoutes![0].bus.status_bus != 2
-                                              ?listRoutes![0].bus.seats_amount == l![0]
+                                                ?listRoutes![0].bus.seats_amount ==  int.parse(l![0])
                                             ?Padding(
                                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                                               child: ElevatedButton(
@@ -485,6 +513,7 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
                                               padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                                               child: ElevatedButton(
                                                 onPressed: () {
+                                                  removeValue();
                                                   Navigator.of(context).push(
                                                       MaterialPageRoute(
                                                           builder: (context) => const ApplySchoolBusPage()));
@@ -526,6 +555,11 @@ class _SchoolBusDetailsState extends State<SchoolBusDetailsPage> {
     );
   }
 
+  void removeValue(){
+    getSharedPreferences.removeLatitude();
+    getSharedPreferences.removeLongitude();
+    getSharedPreferences.removeAddress();
+  }
 
   String CalAge(DateTime date){
     DateTime purchase_date = DateTime(date.year, date.month, date.day);
