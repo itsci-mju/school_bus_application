@@ -43,6 +43,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
   final _ctrlimage_Bus = TextEditingController();
   final _croundshcool = TextEditingController();
   final _crounddetail = TextEditingController();
+  final _ctrlrRoute_mapURL = TextEditingController();
   TextEditingController Address = TextEditingController();
 
   final imageprofile = TextEditingController();
@@ -61,13 +62,11 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
   List<School>? listSchool = [];
   List<String>? DropdownSchool = [];
   String? selectedSchoolValue;
-  List<Routes>? listaroute = [];
+  List<BusStop>? listaroute = [];
 
   void getlistSchool()  {
     var log = Logger();
-    setState(() {
-      isLoading = true;
-    });
+
     Smanager.listSchoolDriver().then((value) => {
       listSchool = value,
       for(int i = 0 ; i < listSchool!.length; i++){
@@ -92,6 +91,9 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
   static const double height = 10;
 
   List<Widget> _cardList = [];
+
+  String? latitude = getSharedPreferences.getLatitude() ?? '';
+  String? longitude = getSharedPreferences.getLongitude() ?? '';
 
   Widget _card(BuildContext context,String shcool,String round,String rounddetail) {
     return Column(
@@ -206,6 +208,9 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
     _ctrldriver_license.text = fileP1;
     _ctrlstudent_bus_license.text = fileP2;
 
+
+
+
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.fromLTRB(30, 25, 30, 8),
@@ -244,6 +249,71 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                 child: Column(
                   children: [
                     Row(
+                      mainAxisAlignment : MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment : CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Padding(
+                                  padding: EdgeInsets.only(left: 5.0),
+                                  child: Text('ที่อยู่',style: TextStyle(fontWeight: FontWeight.bold,fontSize: 16),),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 190.0),
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: (context) => const ShowMap()));
+                                    },
+                                    icon: const Icon(Icons.location_on),
+                                    label: const Text(
+                                      'เลือกที่อยู่',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    style: ElevatedButton.styleFrom(
+                                      primary:  Colors.amber,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Container(
+                              width: 350,
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1.0, color: const Color(
+                                    0xFFC9C9C9)),
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              child: Center(
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 10.0),
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    controller: Address,
+                                    maxLines: 4, //or null
+                                    decoration: const InputDecoration.collapsed(
+                                        hintText: "กรุณากรอกที่อยู่ที่ต้องการขึ้นรถ"
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
                       children: [
                         Expanded(
                           child: TextFormField(
@@ -260,7 +330,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                             },
                             maxLines: 1,
                             decoration: InputDecoration(
-                              labelText: 'ชื่อผู้ใช่้',
+                              labelText: 'ชื่อผู้ใช้',
                               prefixIcon: const Icon(Icons.person),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(10),
@@ -778,7 +848,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                                     if(listaroute!.isEmpty){
                                       rec = true;
                                     }else {
-                                      for(Routes r in listaroute!){
+                                      for(BusStop r in listaroute!){
                                         if(r.school.school_name == selectedSchoolValue!.split(" : ")[1]){
                                           rec = false;
                                         }
@@ -788,8 +858,8 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                                       _cardList.add(_card(context,selectedSchoolValue!,_croundshcool.text,_crounddetail.text));
                                       String nums =  selectedSchoolValue!.split(" : ")[0];
                                       School s = listSchool![int.parse(nums)-1];
-                                      Routes r = Routes(_crounddetail.text,_croundshcool.text,s);
-                                      listaroute!.add(r);
+                                      //BusStop r = BusStop(_crounddetail.text,_croundshcool.text,s);
+                                      //listaroute!.add(r);
                                       index ++;
                                     }else{
                                       alertDialogApp.showAlertDialog(context, 'กรุณาอย่าเลือกโรงเรียนซ้ำ');
@@ -901,15 +971,16 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                     const SizedBox(
                       height: height,
                     ),
-
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: _cardList.length,
-                      itemBuilder: (context, index) {
-                        return _cardList[index];
-                      },
+                    SingleChildScrollView(
+                      child:  ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: _cardList.length,
+                        itemBuilder: (context, index) {
+                          return _cardList[index];
+                        },
+                      ),
                     ),
-
                     const SizedBox(
                       height: height,
                     ),
@@ -1027,9 +1098,9 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                   List<String> s2 = _ctrlbirthday.text.split("/");
                   DateTime p = DateTime(int.parse(s2[0]), int.parse(s2[1]), int.parse(s2[2]));
                   Driver driver = Driver(_ctrlIDCard.text,_ctrlfirstname.text,_ctrllastname.text,b,_ctrlphone.text,
-                      _ctrlemail.text,_ctrlgroupline.text,_ctrladdress.text,imageprofile.text,driver_license.text,student_bus_license.text
-                      ,Login(_ctrlUsername.text,_ctrlPassword.text,"3"));
-                  Bus bus = Bus(_ctrlnum_plate.text,_ctrlprovince.text,_ctrlbrand.text,p,int.parse(_ctrlseats_amount.text),_position!.latitude.toString(),_position!.longitude.toString(),1,"",image_Bus.text,driver);
+                      _ctrlemail.text,_ctrlgroupline.text,_ctrladdress.text,latitude!,longitude!,imageprofile.text,driver_license.text,student_bus_license.text
+                      ,Login(_ctrlUsername.text,_ctrlPassword.text,3));
+                  Bus bus = Bus(_ctrlnum_plate.text,_ctrlprovince.text,_ctrlbrand.text,p,int.parse(_ctrlseats_amount.text),_position!.latitude.toString(),_position!.longitude.toString(),_ctrlrRoute_mapURL.text,1,"",image_Bus.text,driver);
                   String result = await manager.doRegisrerDriver(bus);
                   var logger = Logger();
                   await getSharedPreferences.init();
@@ -1037,8 +1108,8 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
 
                   if(result != "0") {
                     bool resultr = false ;
-                    for(Routes routes in listaroute!){
-                      routes.route_ID= "";
+                    for(BusStop routes in listaroute!){
+                      routes.bus_stop_ID= "";
                       routes.bus = bus;
                       String resultroute = await routeManager.doAddRoute(routes);
                       if(resultroute!= "0"){
@@ -1061,6 +1132,8 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                       ).show(
                         context,
                       );
+                      getSharedPreferences.removeLongitude();
+                      getSharedPreferences.removeLatitude();
                       Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
                               builder: (context) => const LoginPage()));
@@ -1068,7 +1141,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                       isLoading = false;
                       AnimatedSnackBar.rectangle(
                           'เกิดข้อผิดพลาด',
-                          'เกิดข้อผิดพลาดในการสมัครสมาชิก',
+                          'ชื่อผู้ใช้ หรือ รหัสบัตรประชาชน ซ้ำ',
                           type: AnimatedSnackBarType.error,
                           brightness: Brightness.light,
                           duration : const Duration(seconds: 5)
@@ -1082,7 +1155,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
                     isLoading = false;
                     AnimatedSnackBar.rectangle(
                         'เกิดข้อผิดพลาด',
-                        'เกิดข้อผิดพลาดในการสมัครสมาชิก',
+                        'ชื่อผู้ใช้ หรือ รหัสบัตรประชาชน ซ้ำ',
                         type: AnimatedSnackBarType.error,
                         brightness: Brightness.light,
                         duration : const Duration(seconds: 5)
