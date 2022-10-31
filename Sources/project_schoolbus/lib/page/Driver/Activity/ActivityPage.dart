@@ -65,8 +65,8 @@ class _ActivityState extends State<ActivityPage> with SingleTickerProviderStateM
                 bottomRight: Radius.circular(10),
                 bottomLeft: Radius.circular(10))
         ),
-        leading: new IconButton(
-          icon: new Icon(Icons.arrow_back, color: Colors.black),
+        leading: IconButton(
+          icon:  const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () =>   Navigator.of(context).pushReplacement(
               MaterialPageRoute(
                   builder: (context) => MainPageDriver())),
